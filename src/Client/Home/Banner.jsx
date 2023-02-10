@@ -209,7 +209,7 @@ export default function Banner() {
 
                     <a
                       href="#"
-                      className="inline-block rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-center font-medium text-white hover:bg-indigo-700"
+                      className="inline-block rounded-md border border-transparent bg-gradient-to-r from-purple-900 to-indigo-600 py-3 px-8 text-center font-medium text-white transform transition hover:scale-95 duration-300 ease-in-out"
                     >
                       Explore
                     </a>

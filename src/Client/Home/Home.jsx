@@ -1,7 +1,9 @@
 import React from 'react'
 import Banner from './Banner'
 import Detail from './Detail'
+import Footer from './Footer'
 import Gigs from './Gigs'
+import Vendors from './Vendors'
 
 function Home() {
   return (
@@ -9,7 +11,9 @@ function Home() {
         <Banner/>
         <Detail/>
         <Gigs heading={"Featured Products"}/>
-        <Gigs heading={"Featured Services"}/>
+        <Gigs heading={"Top Services"}/>
+        <Vendors heading={"Most Popular Freelancer's"}/>
+        <Footer/>
     </div>
   )
 }
