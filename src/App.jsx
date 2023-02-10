@@ -6,19 +6,24 @@ import UserOtp from './Client/Auth/Signup/UserOtp';
 import Home from './Client/Home/Home';
 import SingleGig from './Client/SingleGig/SingleGig';
 import VendorDetails from './Client/VendorDetails/VendorDetails';
+import ProtectedRoutes from './protectedRoutes';
 
 function App() {
   return (
     <div>
       <Router>
         <Routes>
-          <Route path='/' element={<Home />}/>
-          <Route path='/login' element={<Login />}/>
-          <Route path='/signup' element={<Signup />}/>
-          <Route path='/userOtp' element={<UserOtp />}/>
-          <Route path='/allGigs' element={<AllGigs />}/>
-          <Route path='/singleGig' element={<SingleGig />}/>
-          <Route path='/vendorDetails' element={<VendorDetails />}/>
+          <Route element={<ProtectedRoutes />}>
+            <Route path='/singleGig' element={<SingleGig />} />
+            <Route path='/vendorDetails' element={<VendorDetails />} />
+          </Route>
+          
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/userOtp' element={<UserOtp />} />
+          <Route path='/allGigs' element={<AllGigs />} />
+
         </Routes>
       </Router>
     </div>

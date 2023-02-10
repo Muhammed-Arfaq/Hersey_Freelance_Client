@@ -13,6 +13,8 @@ const navigation = [
 
 export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const fullName = localStorage.getItem( userData )
+    console.log(fullName);
     return (
         <>
             <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">

@@ -33,7 +33,10 @@ export default function Login() {
     axios.post("http://localhost:3500/login",{
         email,
         password
-    }).then(() => {
+    }).then((result) => {
+      document.cookie = result.data.token
+      localStorage.setItem( "userData", result.data.data.user.fullName )
+      console.log(result);
       navigate('/')
     })
   }

@@ -22,9 +22,21 @@ const navigation = [
 
 export default function Banner() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const token = document.cookie
+
+  const logout = () => {
+      document.cookie.split(";").forEach(function(c) {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    })
+  }
+
+  const fullName = localStorage.getItem( "userData" )
+  console.log(fullName);
+
   return (
     <>
-      <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
+      <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
@@ -59,12 +71,21 @@ export default function Banner() {
               </a>
             </div>
             <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
+              {token && 
               <a
-                href="/login"
+                href='/login' 
+                onClick={logout}
                 className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
               >
-                Login
+                Logout
+              </a> }
+              {!token && 
+                <a
+                className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
+              >
+                {fullName}
               </a>
+              }
             </div>
           </nav>
           <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
