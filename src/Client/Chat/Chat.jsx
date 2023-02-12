@@ -4,14 +4,7 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../assets/img/Logo1.png";
-import AddIcon from '@mui/icons-material/Add';
-
-import Rating from "@mui/material/Rating";
-import { useDispatch } from "react-redux";
-import ReserveModal from "../ReserveModal/ReserveModal";
-import { setCreateSwitchOn } from "../../Redux/Reducer/ReserveModal";
-import { setSwitchOn } from "../../Redux/Reducer/reviewModal";
-import ReviewModal from "../ReviewModal/ReviewModal";
+import './Chat.css'
 
 const navigation = [
     { name: "Home", href: "#" },
@@ -20,17 +13,10 @@ const navigation = [
     { name: "Products", href: "#" },
 ];
 
-export default function SingleGig() {
+export default function Chat() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    const [value, setValue] = React.useState(2);
-
-    const dispatch = useDispatch()
-
     return (
         <>
-            <ReviewModal />
-            <ReserveModal />
             <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
                 <div>
                     <nav
@@ -139,361 +125,331 @@ export default function SingleGig() {
                     </Dialog>
                 </div>
             </div>
-            <section>
-                <div class="relative max-w-screen-xl px-4 py-8 mx-auto mt-14">
-                    <div class="grid items-start grid-cols-1 gap-8 md:grid-cols-2">
-                        <div class="grid grid-cols-1 gap-4 md:grid-cols-1">
-                            <img
-                                alt="Les Paul"
-                                src="https://images.unsplash.com/photo-1456948927036-ad533e53865c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                                class="object-cover w-full aspect-square rounded-xl"
-                            />
-                        </div>
 
-                        <div class="md:sticky top-0">
-                            <div class="flex justify-between mt-8">
-                                <div class="max-w-[35ch]">
-                                    <div>
-                                        <h1 class="text-2xl font-bold lg:text-2xl">
-                                            Simple Clothes Basic Tee
-                                        </h1>
-                                        <div class="flex items-center space-x-2 mt-1">
-                                            <img
-                                                class="w-10 rounded-full"
-                                                src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                                alt="sara"
-                                            />
-                                            <h2 class="text-gray-800 font-bold cursor-pointer">
-                                                Felipe Sacudon
-                                            </h2>
-                                            <p className="text-gray-700 text-md">|</p>
-                                            <p className="mt-2">
-                                                <Rating name="read-only" value={value} readOnly />
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <p class="text-lg font-bold">$119.99</p>
+            <div class="flex h-screen antialiased text-gray-800 ">
+                <div class="flex flex-row h-full w-full overflow-x-hidden">
+                    <div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
+                        <div
+                            class="flex flex-col items-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
+                        >
+                            <div class="h-20 w-20 rounded-full border overflow-hidden">
+                                <img
+                                    src="https://avatars3.githubusercontent.com/u/2763884?s=128"
+                                    alt="Avatar"
+                                    class="h-full w-full"
+                                />
                             </div>
+                            <div class="text-sm text-white font-semibold mt-2">Aminos Co.</div>
 
-                            <details class="group relative mt-4">
-                                <summary class="block">
-                                    <div>
-                                        <div class="prose max-w-none ">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                Ipsa veniam dicta beatae eos ex error culpa delectus rem
-                                                tenetur, architecto quam nesciunt, dolor veritatis nisi
-                                                minus inventore, rerum at recusandae? Lorem ipsum dolor
-                                                sit amet consectetur adipisicing elit. Placeat nam
-                                                sapiente nobis ea veritatis error consequatur nisi
-                                                exercitationem iure laudantium culpa, animi temporibus
-                                                non! Maxime et quisquam amet. A, deserunt!
-                                            </p>
-                                        </div>
-                                    </div>
-                                </summary>
-                            </details>
-
-                            <div class="mt-8">
-                                <a
-                                    class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500"
-                                    onClick={() => dispatch(setCreateSwitchOn())}
+                        </div>
+                        <div class="flex flex-col mt-8">
+                            <div class="flex flex-row items-center justify-between text-xs">
+                                <span class="font-bold text-base">Messages</span>
+                                <span
+                                    class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
+                                >4</span
                                 >
-                                    Reserve Now
-                                </a>
-                                <div class="flex mt-8">
-                                    <a
-                                        class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500"
-                                        href="/download"
+                            </div>
+                            <div class="flex flex-col space-y-1 mt-5 -mx-2 h-96 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+                                <button
+                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                                >
+                                    <div
+                                        class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
                                     >
-                                        Contact Vendor
-                                    </a>
-                                </div>
+                                        H
+                                    </div>
+                                    <div class="ml-2 text-sm font-semibold">Henry Boyd</div>
+                                </button>
+                                <button
+                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                                >
+                                    <div
+                                        class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
+                                    >
+                                        M
+                                    </div>
+                                    <div class="ml-2 text-sm font-semibold">Marta Curtis</div>
+                                    <div
+                                        class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
+                                    >
+                                        2
+                                    </div>
+                                </button>
+                                <button
+                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                                >
+                                    <div
+                                        class="flex items-center justify-center h-8 w-8 bg-orange-200 rounded-full"
+                                    >
+                                        P
+                                    </div>
+                                    <div class="ml-2 text-sm font-semibold">Philip Tucker</div>
+                                </button>
+                                <button
+                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                                >
+                                    <div
+                                        class="flex items-center justify-center h-8 w-8 bg-pink-200 rounded-full"
+                                    >
+                                        C
+                                    </div>
+                                    <div class="ml-2 text-sm font-semibold">Christine Reid</div>
+                                </button>
+                                <button
+                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
+                                >
+                                    <div
+                                        class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
+                                    >
+                                        J
+                                    </div>
+                                    <div class="ml-2 text-sm font-semibold">Jerry Guzman</div>
+                                </button>
                             </div>
                         </div>
-                        <div class="md:col-span-1 lg:col-span-1">
-                            <div class="p-14 w-full rounded-xl border-0 shadow-2xl">
-                                <h1 className="font-bold text-xl mb-5 sm:text-2xl">
-                                    About This Gig
-                                </h1>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    Autem ad labore nostrum, a explicabo iste est dolorem deserunt
-                                    id ullam magni accusamus saepe, nulla sed sint reiciendis,
-                                    aperiam cumque officiis!
-                                </p>
-
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi
-                                    eveniet ipsam mollitia nesciunt illo! Suscipit, corrupti!
-                                </p>
-
-                                <h2>Features</h2>
-
-                                <ul>
-                                    <li>Smooth neck design</li>
-                                    <li>Breathable fabric</li>
-                                    <li>Odour prevention</li>
-                                    <li>Made from recycled materials</li>
-                                </ul>
+                    </div>
+                    <div class="flex flex-col flex-auto h-full p-6">
+                        <div
+                            class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
+                        >
+                            <div class="flex flex-col h-full overflow-x-auto mb-4 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+                                <div class="flex flex-col h-full">
+                                    <div class="grid grid-cols-12 gap-y-2">
+                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div class="flex flex-row items-center">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>Hey How are you today?</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div class="flex flex-row items-center">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>
+                                                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                                                        elit. Vel ipsa commodi illum saepe numquam maxime
+                                                        asperiores voluptate sit, minima perspiciatis.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                                            <div class="flex items-center justify-start flex-row-reverse">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>I'm ok what about you?</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                                            <div class="flex items-center justify-start flex-row-reverse">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>
+                                                        Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div class="flex flex-row items-center">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>Lorem ipsum dolor sit amet !</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-6 col-end-13 p-3 rounded-lg">
+                                            <div class="flex items-center justify-start flex-row-reverse">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>
+                                                        Lorem ipsum dolor sit, amet consectetur adipisicing. ?
+                                                    </div>
+                                                    <div
+                                                        class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500"
+                                                    >
+                                                        Seen
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div class="flex flex-row items-center">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>
+                                                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                                        Perspiciatis, in.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-start-1 col-end-8 p-3 rounded-lg">
+                                            <div class="flex flex-row items-center">
+                                                <div
+                                                    class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
+                                                >
+                                                    A
+                                                </div>
+                                                <div
+                                                    class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div class="flex flex-row items-center">
+                                                        <button
+                                                            class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-800 rounded-full h-8 w-10"
+                                                        >
+                                                            <svg
+                                                                class="w-6 h-6 text-white"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                    stroke-width="1.5"
+                                                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                                                                ></path>
+                                                                <path
+                                                                    stroke-linecap="round"
+                                                                    stroke-linejoin="round"
+                                                                    stroke-width="1.5"
+                                                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                                ></path>
+                                                            </svg>
+                                                        </button>
+                                                        <div class="flex flex-row items-center space-x-px ml-4">
+                                                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-4 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-12 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-6 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-5 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-4 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-3 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-10 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-1 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-1 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-8 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-2 w-1 bg-gray-500 rounded-lg"></div>
+                                                            <div class="h-4 w-1 bg-gray-500 rounded-lg"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <article class="rounded-xl p-6 sm:p-8 mt-8 shadow-2xl">
-                                <h1 className="font-bold text-xl mb-5 sm:text-2xl">
-                                    About The Vendor
-                                </h1>
-                                <div class="flex items-start">
-                                    <div
-                                        class="hidden sm:grid sm:h-20 sm:w-20 sm:shrink-0 sm:place-content-center sm:rounded-full "
-                                        aria-hidden="true"
-                                    >
-                                        <img
-                                            class="w-24 rounded-full"
-                                            src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                            alt="sara"
+                            <div
+                                class="flex flex-row items-center h-6 rounded-xl  w-full px-4"
+                            >
+
+                                <div class="flex-grow ml-4">
+                                    <div class="relative w-full">
+                                        <input
+                                            type="text"
+                                            name="company-website"
+                                            id="company-website"
+                                            className="block w-full border-0 flex-1 rounded-lg sm:text-sm"
+
+
                                         />
                                     </div>
-
-                                    <div class="sm:ml-8">
-                                        <h2 class="text-gray-800 font-bold cursor-pointer">
-                                            Felipe Sacudon
-                                        </h2>
-
-                                        <p className="mt-1 mb-4">
-                                            <Rating name="read-only" value={value} readOnly />
-                                        </p>
-                                        <a class="rounded border border-current px-8 py-3 text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring">
-                                            Contact Me
-                                        </a>
-                                        <h3 class="mt-6 text-lg font-medium sm:text-xl">
-                                            <a href="" class="hover:underline">
-                                                {" "}
-                                                Some Interesting Podcast Title{" "}
-                                            </a>
-                                        </h3>
-                                        <p class="mt-1 text-sm text-gray-700">
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                            Ipsam nulla amet voluptatum sit rerum, atque, quo culpa ut
-                                            necessitatibus eius suscipit eum accusamus, aperiam
-                                            voluptas exercitationem facere aliquid fuga. Sint.
-                                        </p>
-                                    </div>
                                 </div>
-                            </article>
-                            <section>
-                                <div class="p-14 w-full rounded-xl mt-8 border-0 shadow-2xl">
-                                    <h2 class="text-xl font-bold sm:text-2xl">
-                                        Customer Reviews
-                                    </h2>
-
-                                    <div class="mt-4 flex items-center">
-                                        <p class="text-3xl font-medium">
-                                            3.8
-                                        </p>
-                                        <p className="ml-3 mt-2">
-                                            <Rating name="read-only" value={value} readOnly />
-                                        </p>
-
-                                        <a className="rounded border border-current px-6 py-2 ml-auto text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring" onClick={() => dispatch(setSwitchOn())}>
-                                            Add Review
-                                        </a>
-
-                                    </div>
-
-                                    <div class="mt-8 h-96 overflow-y-scroll hide-scroll-bar grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-1">
-                                        <blockquote>
-                                            <header class="sm:flex sm:items-center">
-                                                <div class="flex items-center space-x-2">
-                                                    <img
-                                                        class="w-8 rounded-full"
-                                                        src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                                        alt="sara"
-                                                    />
-                                                    <h2 class="text-gray-800 font-bold">
-                                                        Felipe Sacudon
-                                                    </h2>
-                                                </div>
-                                                <p className="ml-2 mr-2">|</p>
-                                                <Rating
-                                                    sx={{ height: "1%", width: "1%" }}
-                                                    name="read-only"
-                                                    value={value}
-                                                    readOnly
-                                                />
-                                            </header>
-                                            <p class="mt-2 font-medium sm:mt-3">
-                                                The best thing money can buy!
-                                            </p>
-
-                                            <p class="mt-2 text-gray-700">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit. Ullam possimus fuga dolor rerum dicta, ipsum
-                                                laboriosam est totam iusto alias incidunt cum tempore
-                                                aliquid aliquam error quisquam ipsam asperiores! Iste?
-                                            </p>
-
-                                            <footer class="mt-4">
-                                                <p class="text-xs text-gray-500">
-                                                    John Doe - 12th January, 2024
-                                                </p>
-                                            </footer>
-                                        </blockquote>
-                                        <blockquote>
-                                            <header class="sm:flex sm:items-center">
-                                                <div class="flex items-center space-x-2">
-                                                    <img
-                                                        class="w-8 rounded-full"
-                                                        src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                                        alt="sara"
-                                                    />
-                                                    <h2 class="text-gray-800 font-bold">
-                                                        Felipe Sacudon
-                                                    </h2>
-                                                </div>
-                                                <p className="ml-2 mr-2">|</p>
-                                                <Rating
-                                                    sx={{ height: "1%", width: "1%" }}
-                                                    name="read-only"
-                                                    value={value}
-                                                    readOnly
-                                                />
-                                            </header>
-                                            <p class="mt-2 font-medium sm:mt-3">
-                                                The best thing money can buy!
-                                            </p>
-
-                                            <p class="mt-2 text-gray-700">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit. Ullam possimus fuga dolor rerum dicta, ipsum
-                                                laboriosam est totam iusto alias incidunt cum tempore
-                                                aliquid aliquam error quisquam ipsam asperiores! Iste?
-                                            </p>
-
-                                            <footer class="mt-4">
-                                                <p class="text-xs text-gray-500">
-                                                    John Doe - 12th January, 2024
-                                                </p>
-                                            </footer>
-                                        </blockquote>
-                                        <blockquote>
-                                            <header class="sm:flex sm:items-center">
-                                                <div class="flex items-center space-x-2">
-                                                    <img
-                                                        class="w-8 rounded-full"
-                                                        src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                                        alt="sara"
-                                                    />
-                                                    <h2 class="text-gray-800 font-bold">
-                                                        Felipe Sacudon
-                                                    </h2>
-                                                </div>
-                                                <p className="ml-2 mr-2">|</p>
-                                                <Rating
-                                                    sx={{ height: "1%", width: "1%" }}
-                                                    name="read-only"
-                                                    value={value}
-                                                    readOnly
-                                                />
-                                            </header>
-                                            <p class="mt-2 font-medium sm:mt-3">
-                                                The best thing money can buy!
-                                            </p>
-
-                                            <p class="mt-2 text-gray-700">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit. Ullam possimus fuga dolor rerum dicta, ipsum
-                                                laboriosam est totam iusto alias incidunt cum tempore
-                                                aliquid aliquam error quisquam ipsam asperiores! Iste?
-                                            </p>
-
-                                            <footer class="mt-4">
-                                                <p class="text-xs text-gray-500">
-                                                    John Doe - 12th January, 2024
-                                                </p>
-                                            </footer>
-                                        </blockquote>
-                                        <blockquote>
-                                            <header class="sm:flex sm:items-center">
-                                                <div class="flex items-center space-x-2">
-                                                    <img
-                                                        class="w-8 rounded-full"
-                                                        src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                                        alt="sara"
-                                                    />
-                                                    <h2 class="text-gray-800 font-bold">
-                                                        Felipe Sacudon
-                                                    </h2>
-                                                </div>
-                                                <p className="ml-2 mr-2">|</p>
-                                                <Rating
-                                                    sx={{ height: "1%", width: "1%" }}
-                                                    name="read-only"
-                                                    value={value}
-                                                    readOnly
-                                                />
-                                            </header>
-                                            <p class="mt-2 font-medium sm:mt-3">
-                                                The best thing money can buy!
-                                            </p>
-
-                                            <p class="mt-2 text-gray-700">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit. Ullam possimus fuga dolor rerum dicta, ipsum
-                                                laboriosam est totam iusto alias incidunt cum tempore
-                                                aliquid aliquam error quisquam ipsam asperiores! Iste?
-                                            </p>
-
-                                            <footer class="mt-4">
-                                                <p class="text-xs text-gray-500">
-                                                    John Doe - 12th January, 2024
-                                                </p>
-                                            </footer>
-                                        </blockquote>
-                                        <blockquote>
-                                            <header class="sm:flex sm:items-center">
-                                                <div class="flex items-center space-x-2">
-                                                    <img
-                                                        class="w-8 rounded-full"
-                                                        src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-                                                        alt="sara"
-                                                    />
-                                                    <h2 class="text-gray-800 font-bold">
-                                                        Felipe Sacudon
-                                                    </h2>
-                                                </div>
-                                                <p className="ml-2 mr-2">|</p>
-                                                <Rating
-                                                    sx={{ height: "1%", width: "1%" }}
-                                                    name="read-only"
-                                                    value={value}
-                                                    readOnly
-                                                />
-                                            </header>
-                                            <p class="mt-2 font-medium sm:mt-3">
-                                                The best thing money can buy!
-                                            </p>
-
-                                            <p class="mt-2 text-gray-700">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                elit. Ullam possimus fuga dolor rerum dicta, ipsum
-                                                laboriosam est totam iusto alias incidunt cum tempore
-                                                aliquid aliquam error quisquam ipsam asperiores! Iste?
-                                            </p>
-
-                                            <footer class="mt-4">
-                                                <p class="text-xs text-gray-500">
-                                                    John Doe - 12th January, 2024
-                                                </p>
-                                            </footer>
-                                        </blockquote>
-                                    </div>
+                                <div class="ml-4">
+                                    <button
+                                        class="flex items-center justify-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                                    >
+                                        <span>Send</span>
+                                        <span class="ml-2">
+                                            <svg
+                                                class="w-4 h-4 transform rotate-45 -mt-px"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </button>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+
             <footer aria-label="Site Footer" class="bg-white">
                 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
                     <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

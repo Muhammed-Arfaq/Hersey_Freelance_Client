@@ -6,6 +6,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/Logo1.png'
 
 import Rating from '@mui/material/Rating';
+import { useDispatch } from 'react-redux'
+import { setModalOn } from '../../Redux/Reducer/VendorReviewModal'
+import VendorReviewModal from '../VendorReviewModal/VendorReviewModal'
 
 const navigation = [
   { name: 'Home', href: '#' },
@@ -16,11 +19,12 @@ const navigation = [
 
 export default function VendorDetails() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
+  const dispatch = useDispatch()
   const [value, setValue] = React.useState(2);
 
   return (
     <>
+      <VendorReviewModal/>
       <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
@@ -135,10 +139,10 @@ export default function VendorDetails() {
               </div>
               <div class="w-full text-center mt-20">
                 <div class="flex justify-center lg:pt-4 pt-8 pb-0">
-                  <div class="p-3 text-center">
+                  {/* <div class="p-3 text-center">
                     <span class="text-xl font-bold block uppercase tracking-wide text-slate-700">36</span>
                     <span class="text-sm text-slate-400">Posts</span>
-                  </div>
+                  </div> */}
                   <div class="p-3 text-center">
                     <span class="text-xl font-bold block uppercase tracking-wide text-slate-700">24</span>
                     <span class="text-sm text-slate-400">Works</span>
@@ -154,7 +158,7 @@ export default function VendorDetails() {
             <div class="text-center mt-2">
               <h3 class="text-2xl text-slate-700 font-bold leading-normal mb-1">Mike Thompson</h3>
               <div class="mb-2">
-              <p className='text-center'><Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={value} readOnly /></p>
+                <p><Rating name="read-only" value={value} readOnly /></p>
               </div>
             </div>
             <div class="mt-6 py-6 border-t border-slate-200 text-center">
@@ -619,7 +623,7 @@ export default function VendorDetails() {
         <section className='col-span-12 sm:col-span-10 md:col-span-8 xl:col-span-9 md:ml-6'>
           <div class="p-14 w-full rounded-xl mt-8 border-0 shadow-2xl ">
             <h2 class="text-xl font-bold sm:text-2xl">Customer Reviews</h2>
-
+            
             <div class="mt-4 flex items-center">
               <p class="text-3xl font-medium">
                 3.8
@@ -628,6 +632,9 @@ export default function VendorDetails() {
               <p className='ml-3 mt-2'>
                 <Rating name="read-only" value={value} readOnly />
               </p>
+              <a className="rounded border border-current px-6 py-2 ml-auto text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring" onClick={() => dispatch(setModalOn())}>
+                Add Review
+              </a>
             </div>
 
             <div class="mt-8 h-96 overflow-y-scroll hide-scroll-bar grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-1">
