@@ -6,29 +6,37 @@ import ProfileModal from "../ProfileModal/ProfileModal";
 import Navbar from "../Home/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { userDetail } from "../../API";
+import { reservedGig, userDetail } from "../../API";
 
 export default function Profile() {
     const dispatch = useDispatch()
     const token = localStorage.getItem("jwt")
 
     const [user, setUser] = useState("")
+    const [reserved, setReserved] = useState([])
 
-    const userDetails = async() => {
-       await userDetail(token).then((result) => {
+    const userDetails = async () => {
+        await userDetail(token).then((result) => {
             setUser(result.data.data.profile)
         })
     }
 
+    const reservedGigs = async () => {
+        await reservedGig(token).then((result) => {
+            setReserved(result.data.data.reserved);
+        })
+    }
+
     useEffect(() => {
-      userDetails()
+        userDetails()
+        reservedGigs()
     }, [])
-    
-    
+
+
     return (
         <>
-            <ProfileModal/>
-            <Navbar/>
+            <ProfileModal />
+            <Navbar />
 
             <div class="h-full bg-white p-8">
                 <div class="bg-white rounded-lg shadow-xl pb-8">
@@ -101,15 +109,33 @@ export default function Profile() {
                                 </li>
                             </ul>
                         </div>
+                        <div class="flex-1 bg-white rounded-lg shadow-xl mt-4 p-8">
+                            <h4 class="text-xl text-gray-900 font-bold">Recently Reserved Gigs</h4>
+                            <div class="relative px-4">
+                                <div class="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
+                                {reserved.map((reserved) => (
+                                    <div class="flex items-center w-full my-6 -ml-1.5">
+                                        <div class="w-1/12 z-10">
+                                            <div class="w-3.5 h-3.5 bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-full"></div>
+                                        </div>
+                                        <div class="w-11/12">
+                                            <p class="text-sm">
+                                                {reserved.title} <a href="#" class="text-blue-600 font-bold"> - {reserved.status}</a>.</p>
+                                            <p class="text-xs text-gray-500">{reserved.date}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                     <div class="flex flex-col w-full 2xl:w-2/3">
                         <div className="relative h-screen flex flex-col min-w-0 mb-6 break-words bg-gray-50 rounded-2xl bg-clip-border border-0 shadow-2xl">
                             <h1 className="flex py-5 ml-8 font-bold text-xl text-gray-800">
-                                Reserved Gigs
+                                All Reservations
                             </h1>
                             <div className="flex overflow-y-scroll hide-scroll-bar">
                                 <div className="flex flex-wrap ml-7">
-                                    
+
                                 </div>
                             </div>
                         </div>

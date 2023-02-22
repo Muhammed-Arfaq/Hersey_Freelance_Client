@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
-    show : false
+    show : false,
+    data: ''
 }
 
 const reviewModal = createSlice({
   name: 'review',
   initialState: INITIAL_STATE,
   reducers: {
-    setSwitchOn: (state) => {
+    setSwitchOn: (state, data) => {
       state.show = true
+      state.data = data.payload
+      console.log(state.data);
     },
     setSwitchOff: (state) => {
         state.show = false

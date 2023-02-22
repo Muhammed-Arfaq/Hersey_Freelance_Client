@@ -4,11 +4,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSwitchOff } from "../../Redux/Reducer/reviewModal";
 import CloseIcon from '@mui/icons-material/Close';
 import { Rating } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { addReview } from "../../API";
 
 export default function ReviewModal() {
+    const navigate = useNavigate()
     const cancelButtonRef = useRef(null);
     const dispatch = useDispatch()
+    const token = localStorage.getItem("jwt")
+
+    const [rating, setRating] = useState("")
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [gig, setGig] = useState("")
+
+    const reviewData = {
+        rating, title, description, gig
+    }
+
+    const eventHandler = (e) => {
+        e.preventDefault()
+        addReview(reviewData, token).then(() => {
+            navigate('/allGigs')
+        })
+    }
+
     const show = useSelector((state) => state.showReviewForm.show)
+    const data = useSelector((state) => state.showReviewForm.data)
+
+    console.log(data);
 
     return (
         <Transition.Root show={show} as={Fragment}>
@@ -49,50 +73,64 @@ export default function ReviewModal() {
                                 <div className="bg-gray-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div class=" grid font-mono grid-cols-12">
                                         <div class="border-0 p-4 rounded-md col-span-12">
-                                            <p className="font-bold text-base">
-                                                Rate
-                                            </p>
-                                            <p className="mt-2">
-                                                <Rating name="size-medium" defaultValue={0} />
-                                            </p>
-                                            <div className="mt-4">
-                                                <label htmlFor="company-website" className="block font-bold text-base">
-                                                    Title
-                                                </label>
-                                                <div className="mt-3 flex rounded-md shadow-sm">
-                                                    <input
-                                                        type="text"
-                                                        name="company-website"
-                                                        id="company-website"
-                                                        className="block w-fit shadow-md flex-1 rounded-lg rounded-r-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                        placeholder="Title here"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="mt-4">
-                                                <label htmlFor="about" className="block font-bold text-base">
-                                                    Description
-                                                </label>
-                                                <div className="mt-4">
-                                                    <textarea
-                                                        id="about"
-                                                        name="about"
-                                                        rows={3}
-                                                        className="mt-1 block w-full rounded-md border-0 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                        placeholder="Enter Your Review"
-                                                    />
-                                                </div>
-                                                <p className="mt-2 text-sm text-gray-500">
+                                            <form onSubmit={eventHandler}>
+                                                <p className="font-bold text-base">
+                                                    Rate
                                                 </p>
-                                            </div>
-                                            <div className="px-4 py-3 text-right sm:px-6">
-                                                <button
-                                                    type="submit"
-                                                    className="inline-flex justify-center rounded-md bg-gradient-to-r from-slate-500 to-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm"
-                                                >
-                                                    Submit
-                                                </button>
-                                            </div>
+                                                <p className="mt-2">
+                                                    <Rating name="size-medium" value={rating}
+                                                        onChange={(e) => {
+                                                            setRating(e.target.value)
+                                                        }} defaultValue={0} />
+                                                </p>
+                                                <div className="mt-4">
+                                                    <label htmlFor="company-website" className="block font-bold text-base">
+                                                        Title
+                                                    </label>
+                                                    <div className="mt-3 flex rounded-md shadow-sm">
+                                                        <input
+                                                            type="text"
+                                                            name="company-website"
+                                                            value={title}
+                                                            onChange={(e) => {
+                                                                setTitle(e.target.value)
+                                                            }}
+                                                            id="company-website"
+                                                            className="block w-fit shadow-md flex-1 rounded-lg rounded-r-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                                            placeholder="Title here"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="mt-4">
+                                                    <label htmlFor="about" className="block font-bold text-base">
+                                                        Description
+                                                    </label>
+                                                    <div className="mt-4">
+                                                        <textarea
+                                                            id="about"
+                                                            name="about"
+                                                            value={description}
+                                                            onChange={(e) => {
+                                                                setDescription(e.target.value)
+                                                            }}
+                                                            rows={3}
+                                                            className="mt-1 block w-full rounded-md border-0 shadow-md focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                                            placeholder="Enter Your Review"
+                                                        />
+                                                    </div>
+                                                    <p className="mt-2 text-sm text-gray-500">
+                                                    </p>
+                                                </div>
+                                                <div className="px-4 py-3 text-right sm:px-6">
+                                                    <button
+                                                        onClick={() => setGig(data._id)}
+                                                        type="submit"
+                                                        className="inline-flex justify-center rounded-md bg-gradient-to-r from-slate-500 to-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm"
+                                                    >
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

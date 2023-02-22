@@ -13,3 +13,11 @@ export const userDetail = (token) => axios.get("/userProfile", { headers: { Auth
 export const allProduct = () => axios.get("/products")
 
 export const allService = () => axios.get("/services")
+
+export const reserveNow = (gig, requirements, token) => axios.post("/reserveNow", { gig, requirements }, { headers: { Authorization: `Bearer ${token}` }})
+
+export const addReview = (reviewData, token) => axios.post("/addReview", { reviewData }, { headers: { Authorization: `Bearer ${token}` }}) 
+
+export const gigReview = (token, gigId) => axios.get(`/gigRating/${gigId}`, { headers: { Authorization: `Bearer ${token}` }})
+
+export const reservedGig = (token) => axios.get("/reservedGigs", { headers: { Authorization: `Bearer ${token}` }})
