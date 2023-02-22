@@ -7,146 +7,13 @@ import pic5 from '../../assets/img/plumber.jpeg'
 import pic6 from '../../assets/img/repair.jpeg'
 import pic7 from '../../assets/img/driver.jpeg'
 
-import { useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import logo from '../../assets/img/Logo1.png'
-
-
-const navigation = [
-  { name: 'Home', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Services', href: '#' },
-  { name: 'Products', href: '#' },
-]
+import { Link } from 'react-router-dom'
+import Navbar from './Navbar'
 
 export default function Banner() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  const token = document.cookie
-
-  const logout = () => {
-      document.cookie.split(";").forEach(function(c) {
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    })
-  }
-
-  const fullName = localStorage.getItem( "userData" )
-  console.log(fullName);
-
   return (
     <>
-      <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
-        <div>
-          <nav className="flex h-9 items-center justify-between" aria-label="Global">
-            <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img className="h-8" src={logo} alt="" />
-              </a>
-            </div>
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-900"
-                onClick={() => setMobileMenuOpen(true)}
-              >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-center lg:gap-x-12">
-              {navigation.map((item) => (
-                <a key={item.name} href={item.href} className="font-semibold text-gray-800 hover:text-gray-600">
-                  {item.name}
-                </a>
-              ))}
-            </div>
-            <div className="py-6 sm:hidden lg:block">
-              <a
-                href="#"
-                className="-mx-3 block rounded-lg py-2.5 px-14 text-base font-semibold leading-6 text-gray-800 hover:text-gray-600"
-              >
-                Become a Vendor
-              </a>
-            </div>
-            <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
-              {token && 
-              <a
-                href='/login' 
-                onClick={logout}
-                className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
-              >
-                Logout
-              </a> }
-              {!token && 
-                <a
-                className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
-              >
-                {fullName}
-              </a>
-              }
-            </div>
-          </nav>
-          <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-            <Dialog.Panel focus="true" className="fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:hidden">
-              <div className="flex h-9 items-center justify-between">
-                <div className="flex">
-                  <a href="#" className="-m-1.5 p-1.5">
-                    <span className="sr-only">Your Company</span>
-                    <img
-                      className="h-8"
-                      src={logo}
-                      alt=""
-                    />
-                  </a>
-                </div>
-                <div className="flex">
-                  <button
-                    type="button"
-                    className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
-              </div>
-              <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-gray-500/10">
-                  <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <div className="py-6">
-                    <a
-                      href="#"
-                      className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                    >
-                      Become a Vendor
-                    </a>
-                  </div>
-                  <div className="py-6">
-                    <a
-                      href="/login"
-                      className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                    >
-                      Login
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </Dialog.Panel>
-          </Dialog>
-        </div>
-      </div>
+      <Navbar/>
       <section className="relative w-full h-full py-80">
         <div className="absolute top-0 w-full h-full bg-no-repeat bg-full">
           <div className="relative overflow-hidden bg-white">
@@ -228,12 +95,12 @@ export default function Banner() {
                       </div>
                     </div>
 
-                    <a
-                      href="#"
+                    <Link
+                      to="/allGigs"
                       className="inline-block rounded-md border border-transparent bg-gradient-to-r from-purple-900 to-indigo-600 py-3 px-8 text-center font-medium text-white transform transition hover:scale-95 duration-300 ease-in-out"
                     >
                       Explore
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

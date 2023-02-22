@@ -12,7 +12,7 @@ function Home() {
         <Detail/>
         <Gigs heading={"Featured Products"}/>
         <Gigs heading={"Top Services"}/>
-        <Vendors heading={"Most Popular Freelancer's"}/>
+        {/* <Vendors heading={"Most Popular Freelancer's"}/> */}
         <Footer/>
     </div>
   )

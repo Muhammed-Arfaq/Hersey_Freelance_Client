@@ -9,6 +9,6 @@ export const store = configureStore({
         showReserveDetails: reserveReducer,
         showReviewForm: reviewReducer,
         editProfile: profileReducer,
-        showVendorReviewForm: vendorReducer
+        showVendorReviewForm: vendorReducer,
     },
 })

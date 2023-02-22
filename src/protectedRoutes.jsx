@@ -1,24 +1,12 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom';
-import Home from './Client/Home/Home';
+import { Navigate } from "react-router-dom"
 
-function ProtectedRoutes() {
+const protectedRoutes = ({ children }) => {
+    const token = localStorage.getItem("jwt")
 
-    const [isLogin, setIsLogin] = useState(false)
-
-    useEffect(() => {
-      const token = document.cookie
-      console.log(token);
-      axios.post('http://localhost:3500/protect', {
-        token: token
-      }).then((response) => {
-        setIsLogin(response.data.user)
-      })
-    }, [])
-  return (
-    isLogin ? <Outlet/> : <Home/>
-  )
+    if(!token) {
+        return <Navigate to = {"/login"} replace = {true}></Navigate>
+    }
+    return children
 }
 
-export default ProtectedRoutes
+export default protectedRoutes

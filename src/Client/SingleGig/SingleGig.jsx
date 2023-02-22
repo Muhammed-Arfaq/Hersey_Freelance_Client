@@ -1,196 +1,94 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../assets/img/Logo1.png";
-import AddIcon from '@mui/icons-material/Add';
 
 import Rating from "@mui/material/Rating";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReserveModal from "../ReserveModal/ReserveModal";
 import { setCreateSwitchOn } from "../../Redux/Reducer/ReserveModal";
 import { setSwitchOn } from "../../Redux/Reducer/reviewModal";
 import ReviewModal from "../ReviewModal/ReviewModal";
-
-const navigation = [
-    { name: "Home", href: "#" },
-    { name: "Marketplace", href: "#" },
-    { name: "Services", href: "#" },
-    { name: "Products", href: "#" },
-];
+import { Link, useLocation } from "react-router-dom";
+import Navbar from "../Home/Navbar";
+import { viewGig } from "../../API";
 
 export default function SingleGig() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
     const [value, setValue] = React.useState(2);
-
+    const [singleGig, setSingleGig] = useState("")
     const dispatch = useDispatch()
+    const token = localStorage.getItem("jwt");
+
+    const location = useLocation()
+    const gigId = location?.state
+
+    const viewSingleGig = async () => {
+        await viewGig(gigId, token).then((result) => {
+            console.log(result.data.data.singleGig.vendorId.fullName);
+            setSingleGig(result.data.data.singleGig);
+        })
+    }
+
+    useEffect(() => {
+        viewSingleGig()
+    }, [])
+
 
     return (
         <>
             <ReviewModal />
             <ReserveModal />
-            <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
-                <div>
-                    <nav
-                        className="flex h-9 items-center justify-between"
-                        aria-label="Global"
-                    >
-                        <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
-                            <a href="#" className="-m-1.5 p-1.5">
-                                <span className="sr-only">Your Company</span>
-                                <img className="h-8" src={logo} alt="" />
-                            </a>
-                        </div>
-                        <div className="flex lg:hidden">
-                            <button
-                                type="button"
-                                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-900"
-                                onClick={() => setMobileMenuOpen(true)}
-                            >
-                                <span className="sr-only">Open main menu</span>
-                                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-                            </button>
-                        </div>
-                        <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-center lg:gap-x-12">
-                            {navigation.map((item) => (
-                                <a
-                                    key={item.name}
-                                    href={item.href}
-                                    className="font-semibold text-gray-800 hover:text-gray-600"
-                                >
-                                    {item.name}
-                                </a>
-                            ))}
-                        </div>
-                        <div className="py-6 sm:hidden lg:block">
-                            <a
-                                href="#"
-                                className="-mx-3 block rounded-lg py-2.5 px-14 text-base font-semibold leading-6 text-gray-800 hover:text-gray-600"
-                            >
-                                Become a Vendor
-                            </a>
-                        </div>
-                        <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
-                            <a
-                                href="/login"
-                                className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
-                            >
-                                Login
-                            </a>
-                        </div>
-                    </nav>
-                    <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-                        <Dialog.Panel
-                            focus="true"
-                            className="fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:hidden"
-                        >
-                            <div className="flex h-9 items-center justify-between">
-                                <div className="flex">
-                                    <a href="#" className="-m-1.5 p-1.5">
-                                        <span className="sr-only">Your Company</span>
-                                        <img className="h-8" src={logo} alt="" />
-                                    </a>
-                                </div>
-                                <div className="flex">
-                                    <button
-                                        type="button"
-                                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        <span className="sr-only">Close menu</span>
-                                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="mt-6 flow-root">
-                                <div className="-my-6 divide-y divide-gray-500/10">
-                                    <div className="space-y-2 py-6">
-                                        {navigation.map((item) => (
-                                            <a
-                                                key={item.name}
-                                                href={item.href}
-                                                className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
-                                            >
-                                                {item.name}
-                                            </a>
-                                        ))}
-                                    </div>
-                                    <div className="py-6">
-                                        <a
-                                            href="#"
-                                            className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                                        >
-                                            Become a Vendor
-                                        </a>
-                                    </div>
-                                    <div className="py-6">
-                                        <a
-                                            href="/login"
-                                            className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                                        >
-                                            Login
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </Dialog.Panel>
-                    </Dialog>
-                </div>
-            </div>
+            <Navbar/>
             <section>
+
+
+
                 <div class="relative max-w-screen-xl px-4 py-8 mx-auto mt-14">
                     <div class="grid items-start grid-cols-1 gap-8 md:grid-cols-2">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-1">
                             <img
                                 alt="Les Paul"
-                                src="https://images.unsplash.com/photo-1456948927036-ad533e53865c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                                src={singleGig.image}
                                 class="object-cover w-full aspect-square rounded-xl"
                             />
                         </div>
 
                         <div class="md:sticky top-0">
                             <div class="flex justify-between mt-8">
-                                <div class="max-w-[35ch]">
+                                <div class="max-w-[36ch]">
                                     <div>
                                         <h1 class="text-2xl font-bold lg:text-2xl">
-                                            Simple Clothes Basic Tee
+                                            {singleGig.title}
                                         </h1>
-                                        <div class="flex items-center space-x-2 mt-1">
+                                        <div class="flex items-center mt-1">
                                             <img
                                                 class="w-10 rounded-full"
                                                 src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
                                                 alt="sara"
                                             />
-                                            <h2 class="text-gray-800 font-bold cursor-pointer">
-                                                Felipe Sacudon
+                                            <h2 class="text-gray-800 font-bold cursor-pointer ml-2">
+                                                {singleGig?.vendorId?.fullName}
                                             </h2>
-                                            <p className="text-gray-700 text-md">|</p>
-                                            <p className="mt-2">
-                                                <Rating name="read-only" value={value} readOnly />
-                                            </p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <p class="text-lg font-bold">$119.99</p>
+                                <p class="text-lg font-bold">₹ {singleGig.price}</p>
                             </div>
 
                             <details class="group relative mt-4">
                                 <summary class="block">
                                     <div>
                                         <div class="prose max-w-none ">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                Ipsa veniam dicta beatae eos ex error culpa delectus rem
-                                                tenetur, architecto quam nesciunt, dolor veritatis nisi
-                                                minus inventore, rerum at recusandae? Lorem ipsum dolor
-                                                sit amet consectetur adipisicing elit. Placeat nam
-                                                sapiente nobis ea veritatis error consequatur nisi
-                                                exercitationem iure laudantium culpa, animi temporibus
-                                                non! Maxime et quisquam amet. A, deserunt!
-                                            </p>
+                                            <div className="mt-3 grid grid-cols-7">
+                                                <p className="col-span-1 font-bold">
+                                                    Gig Rating:
+                                                </p>
+                                                <p className="col-span-1">
+                                                    <Rating name="read-only" value={value} readOnly />
+                                                </p>
+                                            </div>
+                                            <p className="mt-3">{singleGig.overview}</p>
                                         </div>
                                     </div>
                                 </summary>
@@ -204,12 +102,13 @@ export default function SingleGig() {
                                     Reserve Now
                                 </a>
                                 <div class="flex mt-8">
-                                    <a
-                                        class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500"
-                                        href="/download"
-                                    >
+                                    <Link to={"/chat"} state={{
+                                        vendorId: singleGig?.vendorId?._id,
+                                        vendorName: singleGig?.vendorId?.fullName
+                                    }}
+                                        class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500">
                                         Contact Vendor
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -219,25 +118,8 @@ export default function SingleGig() {
                                     About This Gig
                                 </h1>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    Autem ad labore nostrum, a explicabo iste est dolorem deserunt
-                                    id ullam magni accusamus saepe, nulla sed sint reiciendis,
-                                    aperiam cumque officiis!
+                                    {singleGig.description}
                                 </p>
-
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi
-                                    eveniet ipsam mollitia nesciunt illo! Suscipit, corrupti!
-                                </p>
-
-                                <h2>Features</h2>
-
-                                <ul>
-                                    <li>Smooth neck design</li>
-                                    <li>Breathable fabric</li>
-                                    <li>Odour prevention</li>
-                                    <li>Made from recycled materials</li>
-                                </ul>
                             </div>
                             <article class="rounded-xl p-6 sm:p-8 mt-8 shadow-2xl">
                                 <h1 className="font-bold text-xl mb-5 sm:text-2xl">
@@ -493,6 +375,7 @@ export default function SingleGig() {
                         </div>
                     </div>
                 </div>
+
             </section>
             <footer aria-label="Site Footer" class="bg-white">
                 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">

@@ -2,22 +2,19 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/Logo1.png'
-
-
-const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Marketplace', href: '#' },
-    { name: 'Services', href: '#' },
-    { name: 'Products', href: '#' },
-]
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const fullName = localStorage.getItem( userData )
-    console.log(fullName);
+
+    const token = localStorage.getItem("jwt")
+
+    const logout = () => {
+        localStorage.clear();
+    }
     return (
         <>
-            <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
+            <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
                 <div>
                     <nav className="flex h-9 items-center justify-between" aria-label="Global">
                         <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
@@ -37,27 +34,37 @@ export default function Navbar() {
                             </button>
                         </div>
                         <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-center lg:gap-x-12">
-                            {navigation.map((item) => (
-                                <a key={item.name} href={item.href} className="font-semibold text-gray-300 hover:text-gray-400">
-                                    {item.name}
-                                </a>
-                            ))}
+                            <Link to="/" className="font-semibold text-gray-800 hover:text-gray-600">
+                                Home
+                            </Link>
+                            <Link to="/allGigs" className="font-semibold text-gray-800 hover:text-gray-600">
+                                Marketplace
+                            </Link>
+                            <Link to="/chat" className="font-semibold text-gray-800 hover:text-gray-600">
+                                Message
+                            </Link>
+                            <Link to="/profile" className="font-semibold text-gray-800 hover:text-gray-600">
+                                Profile
+                            </Link>
                         </div>
-                        <div className="py-6 sm:hidden lg:block">
-                            <a
-                                href="/vendorSignup"
-                                className="-mx-3 block rounded-lg py-2.5 px-14 text-base font-semibold leading-6 text-gray-300 hover:text-gray-400"
-                            >
-                                Become a Seller
-                            </a>
-                        </div>
+
                         <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
-                            <a
-                                href="/login"
-                                className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-300 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-700 hover:text-gray-400"
-                            >
-                                Login
-                            </a>
+                            {token &&
+                                <Link
+                                    to='/login'
+                                    onClick={logout}
+                                    className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
+                                >
+                                    Logout
+                                </Link>}
+                            {!token &&
+                                <Link
+                                    to='/login'
+                                    className="inline-block rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-800 shadow-sm ring-1 ring-gray-900/20 hover:ring-gray-500 hover:text-gray-600"
+                                >
+                                    Login
+                                </Link>
+                            }
                         </div>
                     </nav>
                     <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -87,31 +94,36 @@ export default function Navbar() {
                             <div className="mt-6 flow-root">
                                 <div className="-my-6 divide-y divide-gray-500/10">
                                     <div className="space-y-2 py-6">
-                                        {navigation.map((item) => (
-                                            <a
-                                                key={item.name}
-                                                href={item.href}
-                                                className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
+                                        <Link to="/" className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10">
+                                            Home
+                                        </Link>
+                                        <Link to="/allGigs" className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10">
+                                            Marketplace
+                                        </Link>
+                                        <Link to="/chat" className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10">
+                                            Message
+                                        </Link>
+                                        <Link to="/profile" className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10">
+                                            Profile
+                                        </Link>
+                                    </div>
+                                    <div className="py-6">
+                                        {token &&
+                                            <Link
+                                                to='/login'
+                                                onClick={logout}
+                                                className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
                                             >
-                                                {item.name}
-                                            </a>
-                                        ))}
-                                    </div>
-                                    <div className="py-6">
-                                        <a
-                                            href="/vendorSignup"
-                                            className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                                        >
-                                            Become a Seller
-                                        </a>
-                                    </div>
-                                    <div className="py-6">
-                                        <a
-                                            href="/login"
-                                            className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                                        >
-                                            Login
-                                        </a>
+                                                Logout
+                                            </Link>}
+                                        {!token &&
+                                            <Link
+                                                to='/login'
+                                                className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
+                                            >
+                                                Login
+                                            </Link>
+                                        }
                                     </div>
                                 </div>
                             </div>

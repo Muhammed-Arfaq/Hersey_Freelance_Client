@@ -3,7 +3,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { switchOff } from "../../Redux/Reducer/profileModal";
 import CloseIcon from '@mui/icons-material/Close';
-import { Rating } from "@mui/material";
 
 export default function ProfileModal() {
     const cancelButtonRef = useRef(null);

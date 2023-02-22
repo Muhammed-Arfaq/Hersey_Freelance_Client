@@ -1,7 +1,7 @@
 import React from "react";
 import github from '../../../assets/img/github.svg'
 import google from '../../../assets/img/google.svg'
-import bg2 from '../../../assets/img/wlppr12.jpg'
+import bg2 from '../../../assets/img/wlppr1.jpg'
 
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
@@ -13,9 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Services', href: '#' },
-  { name: 'Products', href: '#' },
+  { name: 'Marketplace', href: '#' }
 ]
 
 export default function Signup() {
@@ -74,14 +72,7 @@ export default function Signup() {
                 </a>
               ))}
             </div>
-            <div className="py-6 sm:hidden lg:block">
-              <a
-                href="/vendorSignup"
-                className="-mx-3 block rounded-lg py-2.5 px-14 text-base font-semibold leading-6 text-gray-300 hover:text-gray-400"
-              >
-                Become a Seller
-              </a>
-            </div>
+            
             <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
               <a
                 href="/login"
@@ -128,14 +119,7 @@ export default function Signup() {
                       </a>
                     ))}
                   </div>
-                  <div className="py-6">
-                    <a
-                      href="/vendorSignup"
-                      className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
-                    >
-                      Become a Seller
-                    </a>
-                  </div>
+                  
                   <div className="py-6">
                     <a
                       href="/login"

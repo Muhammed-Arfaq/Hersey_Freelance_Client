@@ -9,24 +9,22 @@ import Profile from './Client/Profile/Profile';
 import SingleGig from './Client/SingleGig/SingleGig';
 import VendorDetails from './Client/VendorDetails/VendorDetails';
 import ProtectedRoutes from './protectedRoutes';
+import ReRoute from './reRoute';
 
 function App() {
   return (
     <div>
       <Router>
         <Routes>
-          <Route element={<ProtectedRoutes />}>
-          </Route>
-            <Route path='/singleGig' element={<SingleGig />} />
-            <Route path='/vendorDetails' element={<VendorDetails />} />
-
           <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<ReRoute><Login /></ReRoute>} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/userOtp' element={<UserOtp />} />
           <Route path='/allGigs' element={<AllGigs />} />
-          <Route path='/chat' element={<Chat />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/singleGig' element={<ProtectedRoutes><SingleGig /></ProtectedRoutes>} />
+          <Route path='/vendorDetails' element={<ProtectedRoutes><VendorDetails /></ProtectedRoutes>} />
+          <Route path='/chat' element={<ProtectedRoutes><Chat /></ProtectedRoutes>} />
+          <Route path='/profile' element={<ProtectedRoutes><Profile /></ProtectedRoutes>} />
 
         </Routes>
       </Router>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/img/Logo1.png'
 
 
@@ -11,12 +12,12 @@ function Footer() {
                         class="flex flex-col items-center gap-4 rounded-lg bg-gradient-to-r from-purple-900 to-indigo-600 p-6 shadow-lg sm:flex-row sm:justify-between"
                     >
                         <strong class="text-xl text-white sm:text-xl">
-                            Find The Right Talent Here!
+                            Want to be a Vendor!
                         </strong>
 
-                        <a
+                        <Link
                             class="inline-flex items-center rounded-full border border-white bg-white px-8 py-3 text-indigo-600 hover:bg-transparent hover:text-white focus:outline-none focus:ring active:bg-white/90"
-                            href="/"
+                            to="http://127.0.0.1:4500/vendor/signup"
                         >
                             <span class="text-sm font-medium"> Let's Get Started </span>
 
@@ -34,7 +35,7 @@ function Footer() {
                                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                                 />
                             </svg>
-                        </a>
+                        </Link>
                     </div>
 
                     <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
