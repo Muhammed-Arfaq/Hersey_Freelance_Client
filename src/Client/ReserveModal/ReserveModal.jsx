@@ -19,7 +19,7 @@ export default function ReserveModal() {
     const eventHandler = (e) => {
         e.preventDefault()
         reserveNow(gig, requirements, token).then(() => {
-            navigate('/allGigs')
+            window.location.reload(false)
         })
     }
 

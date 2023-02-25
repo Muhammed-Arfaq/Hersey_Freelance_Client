@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { allProduct, allService } from "../../API";
 
 export default function Gigs({ heading }) {
@@ -44,7 +45,7 @@ export default function Gigs({ heading }) {
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg></button> */}
                       </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class="w-56 h-48 object-cover rounded-2xl" />
+                      <img src={product?.image} alt="Just a flower" class="w-56 h-48 object-cover rounded-2xl" />
                     </div>
                     <div class="flex-auto justify-evenly">
                       <div class="flex flex-wrap ">
@@ -58,11 +59,11 @@ export default function Gigs({ heading }) {
                           <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">{product.title}</h1>
                         </div>
                       </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
+                      <div class="text-xl text-black font-bold mt-1">₹{product?.price}</div>
                       <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-slate-900 to-slate-700 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
+                        <Link to="/singleGig" state={product?._id} class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-slate-900 to-slate-700 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
                           <span>View</span>
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -101,11 +102,11 @@ export default function Gigs({ heading }) {
                           <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">{service.title}</h1>
                         </div>
                       </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
+                      <div class="text-xl text-black font-bold mt-1">₹{service?.price}</div>
                       <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-slate-900 to-slate-700 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
+                        <Link to="/singleGig" state={service?._id} class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-slate-900 to-slate-700 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
                           <span>View</span>
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

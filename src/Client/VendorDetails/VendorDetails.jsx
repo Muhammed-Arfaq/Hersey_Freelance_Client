@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../../assets/img/Logo1.png'
 
 import Rating from '@mui/material/Rating';
@@ -6,23 +6,58 @@ import { useDispatch } from 'react-redux'
 import { setModalOn } from '../../Redux/Reducer/VendorReviewModal'
 import VendorReviewModal from '../VendorReviewModal/VendorReviewModal'
 import Navbar from '../Home/Navbar'
+import { Link, useLocation } from 'react-router-dom';
+import { vendorReview, viewGigVendor } from '../../API';
 
 export default function VendorDetails() {
   const dispatch = useDispatch()
-  const [value, setValue] = React.useState(2);
+  const [gig, setGig] = useState([])
+  const [review, setReview] = useState([])
+  const location = useLocation()
+  const token = localStorage.getItem("jwt")
+
+  let average
+  let total = 0
+  let totalRating = 0
+  review.map((review) => {
+    total = total + review.rating
+    totalRating = totalRating + 1
+  })
+  average = total / totalRating
+
+  const data = location?.state
+  const vendorId = data?.vendor?.vendorId?._id
+
+  const viewAllGigs = async () => {
+    await viewGigVendor(vendorId, token).then((result) => {
+      setGig(result.data.data.viewGig);
+    })
+  }
+
+  const viewVendorRatings = async () => {
+    await vendorReview(vendorId, token).then((result) => {
+      setReview(result.data.data.review);
+    })
+  }
+
+  useEffect(() => {
+    viewAllGigs(),
+      viewVendorRatings()
+  }, [])
+
 
   return (
     <>
-      <VendorReviewModal/>
-      <Navbar/>
+      <VendorReviewModal />
+      <Navbar />
 
       <div className='grid grid-cols-12 mt-20 p-8'>
         <div class="sticky max-w-md mx-auto md:max-w-2xl min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-xl mt-16 col-span-12 sm:col-span-12 md:col-span-4 xl:col-span-3 h-fit">
           <div class="px-6">
             <div class="flex flex-wrap justify-center">
               <div class="w-full flex justify-center">
-                <div class="relative">
-                  <img src="https://github.com/creativetimofficial/soft-ui-dashboard-tailwind/blob/main/build/assets/img/team-2.jpg?raw=true" class="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]" />
+                <div class="relative flex justify-center">
+                  <img src={data?.vendor?.vendorId?.profilePhoto} class="shadow-xl rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-[150px]" />
                 </div>
               </div>
               <div class="w-full text-center mt-20">
@@ -31,34 +66,37 @@ export default function VendorDetails() {
                     <span class="text-xl font-bold block uppercase tracking-wide text-slate-700">36</span>
                     <span class="text-sm text-slate-400">Posts</span>
                   </div> */}
-                  <div class="p-3 text-center">
+                  <div class="p-3 text-center mt-4">
                     <span class="text-xl font-bold block uppercase tracking-wide text-slate-700">24</span>
                     <span class="text-sm text-slate-400">Works</span>
                   </div>
 
-                  <div class="p-3 text-center">
-                    <span class="text-xl font-bold block uppercase tracking-wide text-slate-700">4.5</span>
+                  <div class="p-3 text-center mt-4">
+                    <span class="text-xl font-bold block uppercase tracking-wide text-slate-700">{average}</span>
                     <span class="text-sm text-slate-400">Rating</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="text-center mt-2">
-              <h3 class="text-2xl text-slate-700 font-bold leading-normal mb-1">Mike Thompson</h3>
+              <h3 class="text-2xl text-slate-700 font-bold leading-normal mb-1">{data?.vendor?.vendorId?.fullName}</h3>
               <div class="mb-2">
-                <p><Rating name="read-only" value={value} readOnly /></p>
+                <p><Rating name="read-only" precision={0.5} value={average} readOnly /></p>
               </div>
             </div>
             <div class="mt-6 py-6 border-t border-slate-200 text-center">
               <div class="flex flex-wrap justify-center">
                 <div class="w-full px-4">
-                  <p class="font-light leading-relaxed text-slate-600 mb-6">An artist of considerable range, Mike is the name taken by Melbourne-raised, Brooklyn-based Nick Murphy writes, performs and records all of his own music, giving it a warm.</p>
-                  <a
+                  <p class="font-light leading-relaxed text-slate-600 mb-6">{data?.vendor?.vendorId?.about}</p>
+                  <Link
+                    to={"/chat"} state={{
+                      vendorId: data?.vendor?.vendorId?._id,
+                      vendorName: data?.vendor?.vendorId?.fullName
+                    }}
                     class="rounded border border-current px-8 py-3 text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl"
-
                   >
                     Contact Me
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -71,561 +109,108 @@ export default function VendorDetails() {
           </h1>
           <div className="flex overflow-y-scroll hide-scroll-bar mb-5">
             <div className="flex flex-wrap ml-36 md:ml-28 lg:ml-10 xl:ml-32">
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
+              {gig.map((gig) => (
+                <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
+                  <div class="flex flex-col ">
+                    <div class="">
+                      <div class="relative h-62 w-full mb-3">
+                        <div class="absolute flex flex-col top-0 right-0 p-3">
+                          {/* <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg></button> */}
                         </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
+                        <img src={gig?.image} alt="Just a flower" class="w-60 h-52 object-cover rounded-2xl" />
+                      </div>
+                      <div class="flex-auto justify-evenly">
+                        <div class="flex flex-wrap ">
+                          <div class="w-full flex-none text-sm flex items-center text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
+                          </div>
+                          <div class="flex items-center w-full justify-between min-w-0 ">
+                            <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">{gig?.title}</h1>
+                          </div>
                         </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
+                        <div class="text-xl text-black font-bold mt-1">₹{gig?.price}</div>
+                        <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
+                          <Link to="/singleGig" state={gig?._id} class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
+                            <span>View</span>
+                          </Link>
                         </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col ">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                <div class="flex flex-col mb-4">
-                  <div class="">
-                    <div class="relative h-62 w-full mb-3">
-                      <div class="absolute flex flex-col top-0 right-0 p-3">
-                        <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg></button>
-                      </div>
-                      <img src="https://images.unsplash.com/photo-1577982787983-e07c6730f2d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2059&q=80" alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                    </div>
-                    <div class="flex-auto justify-evenly">
-                      <div class="flex flex-wrap ">
-                        <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                        </div>
-                        <div class="flex items-center w-full justify-between min-w-0 ">
-                          <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">Lorem ipsum
-                            is placeholder text commonly used in the graphic</h1>
-                        </div>
-                      </div>
-                      <div class="text-xl text-black font-bold mt-1">$240.00</div>
-                      <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                        <button class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                          <span>View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
         <div
-          class="p-8 h-fit w-full rounded-xl border-0 shadow-2xl col-span-12 sm:col-span-10 md:col-span-4 xl:col-span-3  lg:-mt-12 md: xl:-mt-36"
+          class="p-8 h-fit w-full rounded-xl border-0 shadow-2xl col-span-12 sm:col-span-10 md:col-span-4 xl:col-span-3  "
         >
           <h1 className='font-bold text-xl mb-5 sm:text-2xl'>About The Vendor</h1>
           <p className='font-light leading-relaxed text-slate-600'>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ad
-            labore nostrum, a explicabo iste est dolorem deserunt id ullam magni
-            accusamus saepe, nulla sed sint reiciendis, aperiam cumque officiis!
+            {data?.vendor?.vendorId?.about}
           </p>
 
-          <p className='font-light leading-relaxed text-slate-600'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi
-            eveniet ipsam mollitia nesciunt illo! Suscipit, corrupti!
-          </p>
+          <h2 className='mt-4 leading-relaxed text-slate-900 font-bold'>Details</h2>
 
-          <h2 className='font-light leading-relaxed text-slate-600'>Features</h2>
+          <ul className='font-light leading-relaxed text-slate-600 mt-4'>
+            <li class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit"><strong class="text-slate-600 font-semibold">Skills:</strong> &nbsp; {data?.vendor?.vendorId?.skill}</li>
+            <li class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit"><strong class="text-slate-600 font-semibold">From:</strong> &nbsp; {data?.vendor?.vendorId?.address?.state}</li>
+            <li class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit"><strong class="text-slate-600 font-semibold">Member Since:</strong> &nbsp; {data?.vendor?.vendorId?.date}</li>
+            <li class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit"><strong class="text-slate-600 font-semibold">Avg. Response Time:</strong> &nbsp; 1 Day</li>
+            <li class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-sm text-inherit"><strong class="text-slate-600 font-semibold">UPI ID:</strong> &nbsp; {data?.vendor?.vendorId?.phone}</li>
 
-          <ul className='font-light leading-relaxed text-slate-600'>
-            <li>Smooth neck design</li>
-            <li>Breathable fabric</li>
-            <li>Odour prevention</li>
-            <li>Made from recycled materials</li>
           </ul>
         </div>
 
         <section className='col-span-12 sm:col-span-10 md:col-span-8 xl:col-span-9 md:ml-6'>
           <div class="p-14 w-full rounded-xl mt-8 border-0 shadow-2xl ">
             <h2 class="text-xl font-bold sm:text-2xl">Customer Reviews</h2>
-            
+
             <div class="mt-4 flex items-center">
               <p class="text-3xl font-medium">
-                3.8
+                {average}
                 <span class="sr-only"> Average review score </span>
               </p>
               <p className='ml-3 mt-2'>
-                <Rating name="read-only" value={value} readOnly />
+                <Rating name="read-only" value={average} precision={0.5} readOnly />
               </p>
-              <a className="rounded border border-current px-6 py-2 ml-auto text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring" onClick={() => dispatch(setModalOn())}>
+              <a className="rounded border border-current px-6 py-2 ml-auto text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring" onClick={() => dispatch(setModalOn(data))}>
                 Add Review
               </a>
             </div>
 
-            <div class="mt-8 h-96 overflow-y-scroll hide-scroll-bar grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-1">
-              <blockquote>
-                <header class="sm:flex sm:items-center">
-                  <div class="flex items-center space-x-2">
-                    <img class="w-8 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
-                    <h2 class="text-gray-800 font-bold">Felipe Sacudon</h2>
-                  </div>
-                  <p className='ml-2 mr-2'>|</p>
-                  <Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={value} readOnly />
-                </header>
-                <p class="mt-2 font-medium sm:mt-3">
-                  The best thing money can buy!
-                </p>
+            <div class="mt-8 h-96 overflow-y-scroll hide-scroll-bar grid grid-cols-1 gap-x-16  lg:grid-cols-1">
+              {review.map((review) => (
+                <blockquote>
+                  <header class="sm:flex sm:items-center">
+                    <div class="flex items-center space-x-2">
+                      <img class="w-8 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
+                      <h2 class="text-gray-800 font-bold">{review?.userId?.fullName}</h2>
+                    </div>
+                    <p className='ml-2 mr-2'>|</p>
+                    <Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={review?.rating} readOnly />
+                  </header>
+                  <p class="mt-2 font-medium sm:mt-3">
+                    {review?.title}
+                  </p>
 
-                <p class="mt-2 text-gray-700">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam
-                  possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto
-                  alias incidunt cum tempore aliquid aliquam error quisquam ipsam
-                  asperiores! Iste?
-                </p>
-              </blockquote>
-              <blockquote>
-                <header class="sm:flex sm:items-center">
-                  <div class="flex items-center space-x-2">
-                    <img class="w-8 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
-                    <h2 class="text-gray-800 font-bold">Felipe Sacudon</h2>
-                  </div>
-                  <p className='ml-2 mr-2'>|</p>
-                  <Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={value} readOnly />
-                </header>
-                <p class="mt-2 font-medium sm:mt-3">
-                  The best thing money can buy!
-                </p>
+                  <p class="mt-2 text-gray-700">
+                    {review?.description}
+                  </p>
 
-                <p class="mt-2 text-gray-700">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam
-                  possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto
-                  alias incidunt cum tempore aliquid aliquam error quisquam ipsam
-                  asperiores! Iste?
-                </p>
-              </blockquote>
-              <blockquote>
-                <header class="sm:flex sm:items-center">
-                  <div class="flex items-center space-x-2">
-                    <img class="w-8 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
-                    <h2 class="text-gray-800 font-bold">Felipe Sacudon</h2>
-                  </div>
-                  <p className='ml-2 mr-2'>|</p>
-                  <Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={value} readOnly />
-                </header>
-                <p class="mt-2 font-medium sm:mt-3">
-                  The best thing money can buy!
-                </p>
-
-                <p class="mt-2 text-gray-700">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam
-                  possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto
-                  alias incidunt cum tempore aliquid aliquam error quisquam ipsam
-                  asperiores! Iste?
-                </p>
-              </blockquote>
-              <blockquote>
-                <header class="sm:flex sm:items-center">
-                  <div class="flex items-center space-x-2">
-                    <img class="w-8 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
-                    <h2 class="text-gray-800 font-bold">Felipe Sacudon</h2>
-                  </div>
-                  <p className='ml-2 mr-2'>|</p>
-                  <Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={value} readOnly />
-                </header>
-                <p class="mt-2 font-medium sm:mt-3">
-                  The best thing money can buy!
-                </p>
-
-                <p class="mt-2 text-gray-700">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam
-                  possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto
-                  alias incidunt cum tempore aliquid aliquam error quisquam ipsam
-                  asperiores! Iste?
-                </p>
-              </blockquote>
-              <blockquote>
-                <header class="sm:flex sm:items-center">
-                  <div class="flex items-center space-x-2">
-                    <img class="w-8 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
-                    <h2 class="text-gray-800 font-bold">Felipe Sacudon</h2>
-                  </div>
-                  <p className='ml-2 mr-2'>|</p>
-                  <Rating sx={{ height: "1%", width: "1%" }} name="read-only" value={value} readOnly />
-                </header>
-                <p class="mt-2 font-medium sm:mt-3">
-                  The best thing money can buy!
-                </p>
-
-                <p class="mt-2 text-gray-700">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam
-                  possimus fuga dolor rerum dicta, ipsum laboriosam est totam iusto
-                  alias incidunt cum tempore aliquid aliquam error quisquam ipsam
-                  asperiores! Iste?
-                </p>
-              </blockquote>
+                  <footer class="mt-4">
+                    <p class="text-xs text-gray-500">
+                      {review?.userId?.fullName} - {review?.date}
+                    </p>
+                  </footer>
+                </blockquote>
+              ))}
             </div>
           </div>
         </section>

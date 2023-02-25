@@ -25,7 +25,7 @@ export default function ReviewModal() {
     const eventHandler = (e) => {
         e.preventDefault()
         addReview(reviewData, token).then(() => {
-            navigate('/allGigs')
+            window.location.reload(false)
         })
     }
 

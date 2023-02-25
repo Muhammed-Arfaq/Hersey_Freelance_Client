@@ -3,6 +3,7 @@ import profileReducer from '../Reducer/profileModal'
 import reserveReducer from '../Reducer/reserveModal'
 import reviewReducer from '../Reducer/reviewModal'
 import vendorReducer from '../Reducer/VendorReviewModal'
+import viewReservedGigsReducer from '../Reducer/viewReservedGigs'
 
 export const store = configureStore({
     reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
         showReviewForm: reviewReducer,
         editProfile: profileReducer,
         showVendorReviewForm: vendorReducer,
+        viewReservedGigs: viewReservedGigsReducer
     },
 })

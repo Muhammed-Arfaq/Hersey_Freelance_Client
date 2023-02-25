@@ -26,14 +26,13 @@ export default function SingleGig() {
     let total = 0
     let totalRating = 0
     review.map((review) => {
-        total = total + review.rating 
+        total = total + review.rating
         totalRating = totalRating + 1
     })
     average = Math.floor(total / totalRating)
 
     const viewSingleGig = async () => {
         await viewGig(gigId, token).then((result) => {
-            console.log(result.data.data.singleGig.vendorId.fullName);
             setSingleGig(result.data.data.singleGig);
         })
     }
@@ -61,7 +60,7 @@ export default function SingleGig() {
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-1">
                             <img
                                 alt="Les Paul"
-                                src={singleGig.image}
+                                src={singleGig?.image}
                                 class="object-cover w-full aspect-square rounded-xl"
                             />
                         </div>
@@ -71,7 +70,7 @@ export default function SingleGig() {
                                 <div class="max-w-[36ch]">
                                     <div>
                                         <h1 class="text-2xl font-bold lg:text-2xl">
-                                            {singleGig.title}
+                                            {singleGig?.title}
                                         </h1>
                                         <div class="flex items-center mt-1">
                                             <img
@@ -98,7 +97,7 @@ export default function SingleGig() {
                                                     Gig Rating:
                                                 </p>
                                                 <p className="col-span-1">
-                                                    <Rating name="read-only" value={average} readOnly />
+                                                    <Rating name="read-only" precision={0.5} value={average} readOnly />
                                                 </p>
                                             </div>
                                             <p className="mt-3">{singleGig?.overview}</p>
@@ -131,7 +130,7 @@ export default function SingleGig() {
                                     About This Gig
                                 </h1>
                                 <p>
-                                    {singleGig.description}
+                                    {singleGig?.description}
                                 </p>
                             </div>
                             <article class="rounded-xl p-6 sm:p-8 mt-8 shadow-2xl">
@@ -156,14 +155,13 @@ export default function SingleGig() {
                                         </h2>
 
                                         <p className="mt-1 mb-4">
-                                            <Rating name="read-only" value={value} readOnly />
+                                            {/* <Rating name="read-only" value={value} readOnly /> */}
                                         </p>
-                                        <Link to={"/chat"} state={{
-                                            vendorId: singleGig?.vendorId?._id,
-                                            vendorName: singleGig?.vendorId?.fullName
+                                        <Link to={"/vendorDetails"} state={{
+                                            vendor: singleGig
                                         }}
                                             class="rounded border border-current px-8 py-3 text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring">
-                                            Contact Me
+                                            View Vendor
                                         </Link>
                                         <h3 class="mt-6 text-lg font-medium sm:text-xl">
 
@@ -185,7 +183,7 @@ export default function SingleGig() {
                                             {average}
                                         </p>
                                         <p className="ml-3 mt-2">
-                                            <Rating name="read-only" value={average} readOnly />
+                                            <Rating name="read-only" precision={0.5} value={average} readOnly />
                                         </p>
 
                                         <a className="rounded border border-current px-6 py-2 ml-auto text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring" onClick={() => dispatch(setSwitchOn(singleGig))}>
@@ -226,7 +224,7 @@ export default function SingleGig() {
 
                                                 <footer class="mt-4">
                                                     <p class="text-xs text-gray-500">
-                                                    {review?.userId?.fullName} - {review?.date}
+                                                        {review?.userId?.fullName} - {review?.date}
                                                     </p>
                                                 </footer>
                                             </blockquote>

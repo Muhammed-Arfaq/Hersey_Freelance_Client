@@ -5,8 +5,9 @@ import { switchOn } from "../../Redux/Reducer/profileModal";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import Navbar from "../Home/Navbar";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { reservedGig, userDetail } from "../../API";
+import { cancelOrder, reservedGig, userDetail } from "../../API";
+import ReservedGigsModal from "../ReservedGigsModal/ReservedGigsModal";
+import { orderModalOn } from "../../Redux/Reducer/viewReservedGigs";
 
 export default function Profile() {
     const dispatch = useDispatch()
@@ -27,6 +28,14 @@ export default function Profile() {
         })
     }
 
+    console.log(reserved);
+
+    const cancelGig = (orderId) => {
+        cancelOrder(orderId, token).then(() => {
+            window.location.reload(false)
+        })
+    }
+
     useEffect(() => {
         userDetails()
         reservedGigs()
@@ -35,6 +44,7 @@ export default function Profile() {
 
     return (
         <>
+            <ReservedGigsModal />
             <ProfileModal />
             <Navbar />
 
@@ -44,9 +54,9 @@ export default function Profile() {
                         <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg" />
                     </div>
                     <div class="flex flex-col items-center -mt-20">
-                        <img src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg" class="w-40 border-4 border-white rounded-full" />
+                        <img src={user?.profilePhoto} class="w-40 h-48 object-cover border-4 border-white rounded-full" />
                         <div class="flex items-center space-x-2 mt-2">
-                            <p class="text-2xl">{user.userName}</p>
+                            <p class="text-2xl">{user?.userName}</p>
                             <span class="bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-full p-1" title="Verified">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-100 h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path>
@@ -58,7 +68,7 @@ export default function Profile() {
                     </div>
                     <div class="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
                         <div class="flex items-center space-x-4 mt-2">
-                            <button class="flex items-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white px-4 py-2 rounded-lg text-sm space-x-2 transition duration-100" onClick={() => dispatch(switchOn())}>
+                            <button class="flex items-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white px-4 py-2 rounded-lg text-sm space-x-2 transition duration-100" onClick={() => dispatch(switchOn(user))}>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"></path>
                                 </svg>
@@ -120,8 +130,8 @@ export default function Profile() {
                                         </div>
                                         <div class="w-11/12">
                                             <p class="text-sm">
-                                                {reserved.title} <a href="#" class="text-blue-600 font-bold"> - {reserved.status}</a>.</p>
-                                            <p class="text-xs text-gray-500">{reserved.date}</p>
+                                                {reserved?.title} <a href="#" class="text-blue-600 font-bold"> - {reserved?.status}</a>.</p>
+                                            <p class="text-xs text-gray-500">{reserved?.date}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -134,8 +144,49 @@ export default function Profile() {
                                 All Reservations
                             </h1>
                             <div className="flex overflow-y-scroll hide-scroll-bar">
-                                <div className="flex flex-wrap ml-7">
-
+                                <div className="flex-auto px-0 pt-0 pb-2">
+                                    <div className="p-0 overflow-x-auto">
+                                        <table className="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                                            <thead className="align-bottom">
+                                                <tr>
+                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Order_ID</th>
+                                                    <th className="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Order Date</th>
+                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Amount</th>
+                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
+                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {reserved.map((orders) => (
+                                                    <tr>
+                                                        <td className="p-2 align-middle bg-transparent  whitespace-nowrap shadow-transparent">
+                                                            <div className="flex px-2 py-1 justify-center">
+                                                                <div className="flex flex-col justify-center">
+                                                                    <h6 className="mb-0 leading-normal text-sm cursor-pointer" onClick={() => dispatch(orderModalOn(orders))}>#{orders?._id}</h6>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                                                            <p className="mb-0 font-semibold leading-tight text-center text-xs">{orders?.date}</p>
+                                                        </td>
+                                                        <td className="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                                                            <span className="font-semibold leading-tight text-xs text-slate-400">₹{orders?.gigId?.price}</span>
+                                                        </td>
+                                                        <td className="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                                                            <span className="font-semibold leading-tight text-base">{orders?.status}</span>
+                                                        </td>
+                                                        <td className="p-2 align-middle text-center bg-transparent whitespace-nowrap shadow-transparent">
+                                                            { orders?.status == 'Cancelled' ?  
+                                                            <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
+                                                            : 
+                                                            <a href=""><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
+                                                        }
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -12,7 +12,6 @@ const reviewModal = createSlice({
     setSwitchOn: (state, data) => {
       state.show = true
       state.data = data.payload
-      console.log(state.data);
     },
     setSwitchOff: (state) => {
         state.show = false

@@ -5,19 +5,19 @@ const INITIAL_STATE = {
     data: ''
 }
 
-const profileModal = createSlice({
-  name: 'profile',
+const viewReservedGigs = createSlice({
+  name: 'viewOrders',
   initialState: INITIAL_STATE,
   reducers: {
-    switchOn: (state, data) => {
+    orderModalOn: (state, data) => {
       state.show = true
       state.data = data.payload
     },
-    switchOff: (state) => {
+    orderModalOff: (state) => {
         state.show = false
     }
   }
 })
 
-export const { switchOff, switchOn } = profileModal.actions;
-export default profileModal.reducer;
+export const { orderModalOff, orderModalOn } = viewReservedGigs.actions;
+export default viewReservedGigs.reducer;
