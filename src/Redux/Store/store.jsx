@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import currentChat from '../Reducer/currentChat'
 import profileReducer from '../Reducer/profileModal'
 import reserveReducer from '../Reducer/reserveModal'
 import reviewReducer from '../Reducer/reviewModal'
@@ -11,6 +12,7 @@ export const store = configureStore({
         showReviewForm: reviewReducer,
         editProfile: profileReducer,
         showVendorReviewForm: vendorReducer,
-        viewReservedGigs: viewReservedGigsReducer
+        viewReservedGigs: viewReservedGigsReducer,
+        setCurrentChat: currentChat
     },
 })

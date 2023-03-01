@@ -9,12 +9,14 @@ import pic7 from '../../assets/img/driver.jpeg'
 
 import { Link } from 'react-router-dom'
 import Navbar from './Navbar'
+import { Toaster } from 'react-hot-toast'
 
 export default function Banner() {
   return (
     <>
       <Navbar/>
       <section className="relative w-full h-full py-80">
+      <Toaster/>
         <div className="absolute top-0 w-full h-full bg-no-repeat bg-full">
           <div className="relative overflow-hidden bg-white">
             <div className="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">

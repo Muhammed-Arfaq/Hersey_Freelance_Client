@@ -9,11 +9,13 @@ import ReserveModal from "../ReserveModal/ReserveModal";
 import { setCreateSwitchOn } from "../../Redux/Reducer/ReserveModal";
 import { setSwitchOn } from "../../Redux/Reducer/reviewModal";
 import ReviewModal from "../ReviewModal/ReviewModal";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import { gigReview, viewGig } from "../../API";
+import { setCurrentChat } from "../../Redux/Reducer/currentChat";
 
 export default function SingleGig() {
+    const navigate = useNavigate()
     const [value, setValue] = React.useState(2);
     const [singleGig, setSingleGig] = useState("")
     const [review, setReview] = useState([])
@@ -114,13 +116,14 @@ export default function SingleGig() {
                                     Reserve Now
                                 </a>
                                 <div class="flex mt-8">
-                                    <Link to={"/chat"} state={{
-                                        vendorId: singleGig?.vendorId?._id,
-                                        vendorName: singleGig?.vendorId?.fullName
-                                    }}
+                                    <button
+                                        onClick={() => {
+                                            dispatch(setCurrentChat(singleGig?.vendorId))
+                                            navigate("/chat")
+                                        }}
                                         class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500">
                                         Contact Vendor
-                                    </Link>
+                                    </button>
                                 </div>
                             </div>
                         </div>

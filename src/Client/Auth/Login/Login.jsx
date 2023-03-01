@@ -9,6 +9,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../../assets/img/Logo1.png'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { userLogin } from "../../../YupSchema/ClientLogin";
 
 
 const navigation = [
@@ -24,25 +26,63 @@ export default function Login() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState({})
 
-  const eventHandler = (e) => {
+  const eventHandler = async(e) => {
     e.preventDefault()
 
-    axios.post("http://localhost:3500/login",{
-        email,
-        password
-    }).then((result) => {
-      localStorage.setItem("jwt", result.data.token)
-      localStorage.setItem( "userId", result.data.data.user._id )
-      localStorage.setItem( "userName", result.data.data.user.userName )
-      localStorage.setItem( "email", result.data.data.user.email )
-      navigate('/')
-    })
+    const formData = {
+      email,
+      password
+    }
+
+    await userLogin
+      .validate(formData, { abortEarly: false })
+      .then(() => {
+        axios.post("http://localhost:3500/login",{
+            email,
+            password
+        }).then((result) => {
+          if(result.data.status == "Success") {
+          toast.success("Login Successfull", {
+            position: "bottom-right",
+            autoClose: 1000,
+            })
+          localStorage.setItem("jwt", result.data.token)
+          localStorage.setItem( "userId", result.data.data.user._id )
+          localStorage.setItem( "userName", result.data.data.user.userName )
+          localStorage.setItem( "email", result.data.data.user.email )
+          setTimeout(()=>{
+            navigate('/')
+          },1500)
+          
+          } else {
+            toast.error("Wrong Email or Password")
+          }
+        })
+      })
+      .catch((validationErrors) => {
+        console.log(validationErrors,"dtf");
+        const errors = validationErrors.inner.reduce((acc, error) => {
+          return { ...acc, [error.path]: error.message };
+        }, {});
+
+        setErrors(errors);
+        console.log(errors);
+
+        Object.values(errors).forEach((error) => {
+          toast.error(error, {
+            position: "bottom-right",
+            autoClose: 10000,
+            })
+        });
+      });
   }
 
   return (
     <>
       <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
+      <Toaster/>
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">

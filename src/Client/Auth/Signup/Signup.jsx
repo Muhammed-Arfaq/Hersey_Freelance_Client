@@ -9,6 +9,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../../assets/img/Logo1.png'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { userSignup } from "../../../YupSchema/ClientSignup";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const navigation = [
@@ -28,25 +30,57 @@ export default function Signup() {
   const [phone, setPhone] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirm, setPasswordConfirm] = useState("")
+  const [errors, setErrors] = useState({})
 
-  const eventHandler = (e) => {
+  const eventHandler = async (e) => {
     e.preventDefault()
 
-    axios.post("http://localhost:3500/OTP", {
+    const formData = {
       fullName,
       userName,
       email,
       phone,
       password,
       passwordConfirm
-    }).then(()=>{
-      navigate("/userOtp")
-    })
+    }
+
+    await userSignup
+      .validate(formData, { abortEarly: false })
+      .then(() => {
+        console.log("heee");
+        axios.post("http://localhost:3500/OTP", {
+          fullName,
+          userName,
+          email,
+          phone,
+          password,
+          passwordConfirm
+        }).then(() => {
+          navigate("/userOtp")
+        })
+      })
+      .catch((validationErrors) => {
+        console.log(validationErrors, "dtf");
+        const errors = validationErrors.inner.reduce((acc, error) => {
+          return { ...acc, [error.path]: error.message };
+        }, {});
+
+        setErrors(errors);
+        console.log(errors);
+
+        Object.values(errors).forEach((error) => {
+          toast.error(error, {
+            position: "bottom-right",
+            autoClose: 10000,
+          })
+        });
+      });
   }
 
   return (
     <>
       <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
+        <Toaster />
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
@@ -72,7 +106,7 @@ export default function Signup() {
                 </a>
               ))}
             </div>
-            
+
             <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
               <a
                 href="/login"
@@ -119,7 +153,7 @@ export default function Signup() {
                       </a>
                     ))}
                   </div>
-                  
+
                   <div className="py-6">
                     <a
                       href="/login"
@@ -198,8 +232,9 @@ export default function Signup() {
                           type="text"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Full Name"
+                          name="fullName"
                           value={fullName}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             setFullName(e.target.value)
                           }}
                         />
@@ -213,10 +248,11 @@ export default function Signup() {
                         </label>
                         <input
                           type="text"
+                          name="userName"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Username"
                           value={userName}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             setUserName(e.target.value)
                           }}
                         />
@@ -233,10 +269,11 @@ export default function Signup() {
                         </label>
                         <input
                           type="email"
+                          name="email"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Email"
                           value={email}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             setEmail(e.target.value)
                           }}
                         />
@@ -251,10 +288,11 @@ export default function Signup() {
                         </label>
                         <input
                           type="number"
+                          name="phone"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Phone"
                           value={phone}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             setPhone(e.target.value)
                           }}
                         />
@@ -271,10 +309,11 @@ export default function Signup() {
                         </label>
                         <input
                           type="password"
+                          name="password"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Password"
                           value={password}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             setPassword(e.target.value)
                           }}
                         />
@@ -289,10 +328,11 @@ export default function Signup() {
                         </label>
                         <input
                           type="password"
+                          name="passwordConfirm"
                           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           placeholder="Confirm Password"
                           value={passwordConfirm}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             setPasswordConfirm(e.target.value)
                           }}
                         />

@@ -9,6 +9,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../../assets/img/Logo1.png'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 
 const navigation = [
@@ -30,6 +31,7 @@ export default function UserOtp() {
     axios.post("http://localhost:3500/verifyOTP",{
       otp
     }).then(() =>{
+      toast.success("Signup Successfull")
       navigate("/login")
     })
   }
@@ -37,6 +39,7 @@ export default function UserOtp() {
   return (
     <>
       <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
+        <Toaster/>
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">

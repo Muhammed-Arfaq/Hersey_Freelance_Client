@@ -2,43 +2,57 @@ import React, { useEffect, useRef } from "react";
 
 import { useState } from "react";
 import logo from "../../assets/img/Logo1.png";
+import team1 from "../../assets/img/team-2.jpg";
 import './Chat.css'
-import { useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import Navbar from "../Home/Navbar";
-import { fetchMsg, sndMsg, userConnections } from "../../API";
+import { fetchMsg, messageCount, sndMsg, userConnections } from "../../API";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentChat } from "../../Redux/Reducer/currentChat";
 
 export default function Chat() {
-
-    const location = useLocation()
-    const vendorId = location?.state?.vendorId
-    const vendorName = location?.state?.vendorName
+    const dispatch = useDispatch()
+    const currentChat = useSelector((state) => state.setCurrentChat.chatUser)
+    const vendorId = currentChat?._id
+    const vendorName = currentChat?.fullName
     const userId = localStorage.getItem("userId")
-    const currentChat = vendorId
-
+    
     const [message, setMessage] = useState([]);
-    const [currentChats, setCurrentChats] = useState({});
     const [inputMessage, setInputMessage] = useState('');
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const [vendors, setVendors] = useState([])
+    const [getCount, setGetCount] = useState([])
+    const [msgCount, setMsgCount] = useState("")
     const token = localStorage.getItem("jwt");
+
+    const getMessageCount = () => {
+        messageCount(userId, token).then((result) => {
+            setMsgCount(result.data.count);
+            console.log(result.data);
+        })
+    }
+
 
     const socket = useRef();
     const scrolRef = useRef();
 
     const getUserConnections = async () => {
         await userConnections(userId, token).then((result) => {
-            setVendors(result.data)
+            setVendors(result.data.users)
+            setGetCount(result.data.connectionCount)
             console.log(result);
         })
     }
 
+    console.log(getCount);
+
     useEffect(() => {
+        getMessageCount()
         getUserConnections()
     }, [])
 
-    const handleSelect = (user) => {
-        setCurrentChats(user);
+    const handleSelect = (vendor) => {
+        dispatch(setCurrentChat(vendor));
     };
 
     useEffect(() => {
@@ -50,19 +64,17 @@ export default function Chat() {
                 console.log(data);
             }
         };
-        fetchMessages(currentChat);
-    }, [currentChat]);
+        fetchMessages(currentChat._id);
+    }, [currentChat._id]);
 
-    // const handleSelect = (vendor) => {
-    //     setCurrentChat(vendor);
-    // };
+
 
     useEffect(() => {
         scrolRef.current.scrollIntoView({ behavior: "smooth" })
     })
 
     useEffect(() => {
-        if (currentChat !== "") {
+        if (currentChat._id !== "") {
             socket.current = io.connect("http://localhost:3500")
             console.log(userId);
             socket.current.emit("addUser", userId);
@@ -76,19 +88,20 @@ export default function Chat() {
         }
 
         socket.current.emit("send-msg", {
-            to: currentChat,
+            to: currentChat._id,
             message: inputMessage
         });
 
         let token = localStorage.getItem('jwt')
         let data = {
-            to: currentChat,
+            to: currentChat._id,
             from: userId,
             message: inputMessage
         }
 
         await sndMsg(data, token)
         setMessage(message.concat(messages))
+        setInputMessage("")
     }
 
     useEffect(() => {
@@ -106,16 +119,16 @@ export default function Chat() {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <div class="flex h-screen antialiased text-gray-800 ">
                 <div class="flex flex-row h-full w-full overflow-x-hidden">
                     <div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
                         <div
                             class="flex flex-col items-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
                         >
-                            <div class="h-20 w-20 rounded-full border overflow-hidden">
+                            <div class="h-20 w-20 rounded-full object-cover overflow-hidden">
                                 <img
-                                    src="https://avatars3.githubusercontent.com/u/2763884?s=128"
+                                    src={currentChat?.profilePhoto || team1}
                                     alt="Avatar"
                                     class="h-full w-full"
                                 />
@@ -127,38 +140,29 @@ export default function Chat() {
                             <div class="flex flex-row items-center justify-between text-xs">
                                 <span class="font-bold text-base">Messages</span>
                                 <span
-                                    class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
-                                >4</span
+                                    class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
+                                >{msgCount}</span
                                 >
                             </div>
                             <div class="flex flex-col space-y-1 mt-5 -mx-2 h-96 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-                                <button
-                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                                >
-                                    <div
-                                        class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
+                                {vendors.map((vendor) => (
+                                    <button
+                                        onClick={() => handleSelect(vendor)}
+                                        class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
                                     >
-                                        H
-                                    </div>
-                                    <div class="ml-2 text-sm font-semibold" >{vendorName}</div>
-                                </button>
-                                { vendors.map((vendor) => (                               
-                                <button
-                                    class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-                                >
-                                    <div
-                                        class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
-                                    >
-                                        M
-                                    </div>
-                                    <div class="ml-2 text-sm font-semibold">{vendor.fullName}</div>
-                                    <div
-                                        class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
-                                    >
-                                        2
-                                    </div>
-                                </button>
-                                 )) }
+                                        <div
+                                            class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
+                                        >
+                                            <img src={vendor?.profilePhoto || team1} className="rounded-lg" />
+                                        </div>
+                                        <div class="ml-2 text-sm font-semibold">{vendor?.fullName}</div>
+                                        <div
+                                            class="flex items-center justify-center ml-auto text-xs text-white bg-gray-500 h-4 w-4 rounded leading-none"
+                                        >
+                                            { getCount?.find((count) => count?.userId === vendor?._id )?.count || 0 }
+                                        </div>
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -203,8 +207,8 @@ export default function Chat() {
                                                     </div>
                                                 </div>
                                             )
-                                            )}
-                                            <div ref={scrolRef} />
+                                        )}
+                                        <div ref={scrolRef} />
                                     </div>
                                 </div>
                             </div>
@@ -216,6 +220,7 @@ export default function Chat() {
                                     <div class="relative w-full">
                                         <input
                                             onChange={(e) => setInputMessage(e.target.value)}
+                                            value={inputMessage}
                                             type="text"
                                             className="block w-full border-0 flex-1 rounded-lg sm:text-sm"
                                         />

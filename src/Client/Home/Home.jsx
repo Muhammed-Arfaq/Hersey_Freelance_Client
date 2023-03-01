@@ -1,4 +1,5 @@
 import React from 'react'
+import { Toaster } from 'react-hot-toast'
 import Banner from './Banner'
 import Detail from './Detail'
 import Footer from './Footer'

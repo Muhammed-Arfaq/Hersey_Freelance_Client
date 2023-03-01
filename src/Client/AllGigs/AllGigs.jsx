@@ -4,29 +4,39 @@ import { useState } from 'react'
 import logo from '../../assets/img/Logo1.png'
 import { Link } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
-import { allProduct, allService } from '../../API'
+import { allGigs } from '../../API'
 
 export default function AllGigs() {
-    const [services, setServices] = useState([])
-    const [products, setProducts] = useState([])
+    const [gigs, setGigs] = useState([])
+    const [tempGigs, setTempGigs] = useState([])
 
-    const allServices = async () => {
-        await allService().then((result) => {
+    const [search, setSearch] = useState("");
+
+    const searchData = (tempProduct) => {
+        return search === ""
+            ? tempProduct
+            : tempProduct.title.toLowerCase().includes(search)
+    };
+
+    const allGig = async () => {
+        await allGigs().then((result) => {
             console.log(result);
-            setServices(result.data.data.services);
+            setGigs(result.data.data.allGigs);
+            setTempGigs(result.data.data.allGigs);
         })
     }
 
-    const allProducts = async () => {
-        await allProduct().then((result) => {
-            console.log(result);
-            setProducts(result.data.data.products);
-        })
+    const filterGigs = (value1, value2) => {
+        if(value1 == 0 && value2 == 0){
+            setTempGigs(gigs)
+            return
+        }
+        let filteredGigs = gigs.filter((gig) => gig.price > value1 && gig.price < value2)
+        setTempGigs(filteredGigs)
     }
 
     useEffect(() => {
-        allServices(),
-        allProducts()
+        allGig()
     }, [])
 
     return (
@@ -37,13 +47,149 @@ export default function AllGigs() {
                     BROWSE ALL SERVICES / PRODUCTS
                 </h1>
             </div>
-            <div className="relative w-5/6 h-screen flex flex-col min-w-0 mb-6 break-words bg-gray-50 rounded-2xl bg-clip-border m-auto p-auto border-0 shadow-2xl mt-20">
-                <h1 className="flex py-5 md:px-10 px-5 md:mx-20 mx-5 font-bold text-3xl text-gray-800">
-                    All SERVICES
-                </h1>
-                <div className="flex overflow-y-scroll hide-scroll-bar">
-                    <div className="flex flex-wrap ml-10 sm:ml-44">
-                        {services.map((service) => (
+            <div className="relative w-5/6 mt-16 flex min-w-0 mb-6 break-words rounded-2xl bg-clip-border m-auto p-auto">
+                <div class="w-full">
+                    <details
+                        class="overflow-hidden rounded-lg border col-span-4 border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+                    >
+                        <summary
+                            class="flex items-center justify-between gap-2 p-3 text-gray-900 transition cursor-pointer"
+                        >
+                            <span class="text-sm font-medium"> Filter By Price </span>
+
+                            <span class="transition group-open:-rotate-180">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-4 h-4"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                                    />
+                                </svg>
+                            </span>
+                        </summary>
+
+                        <div class="bg-white border-t border-gray-200">
+                            <header class="flex items-center justify-between p-4">
+                                <button
+                                    onClick={() => filterGigs(0, 0)}
+                                    type="button"
+                                    class="text-sm text-gray-900 underline underline-offset-4"
+                                >
+                                    Reset
+                                </button>
+                            </header>
+
+                            <ul class="p-4 space-y-1 border-t border-gray-200">
+                                <li className='grid grid-cols-12'>
+                                    <label for="FilterInStock" class="inline-flex items-center col-span-6 gap-2">
+                                        <button
+                                            onClick={() => filterGigs(0, 500)}
+                                            type="button"
+                                            id="FilterInStock"
+                                            class="w-5 h-5 border-gray-300 rounded"
+                                        />
+
+                                        <span class="text-sm font-medium text-gray-700">
+                                            below ₹500
+                                        </span>
+                                    </label>
+                                    <label for="FilterIn" class="inline-flex items-center col-span-6 gap-2">
+                                        <button
+                                            onClick={() => filterGigs(500, 1000)}
+                                            type="button"
+                                            id="FilterIn"
+                                            class="w-5 h-5 border-gray-300 rounded"
+                                        />
+
+                                        <span class="text-sm font-medium text-gray-700">
+                                            ₹500 - ₹1000
+                                        </span>
+                                    </label>
+                                </li>
+
+                                <li className='grid grid-cols-12'>
+                                    <label for="FilterInStoc" class="inline-flex items-center col-span-6 gap-2">
+                                        <button
+                                            onClick={() => filterGigs(1000, 10000)}
+                                            type="button"
+                                            id="FilterInStoc"
+                                            class="w-5 h-5 border-gray-300 rounded"
+                                        />
+
+                                        <span class="text-sm font-medium text-gray-700">
+                                            ₹1000 - ₹10000
+                                        </span>
+                                    </label>
+                                    <label for="Filte" class="inline-flex items-center col-span-6 gap-2">
+                                        <button
+                                            onClick={() => filterGigs(10000, 20000)}
+                                            type="button"
+                                            id="Filte"
+                                            class="w-5 h-5 border-gray-300 rounded"
+                                        />
+
+                                        <span class="text-sm font-medium text-gray-700">
+                                            ₹10000 - ₹20000
+                                        </span>
+                                    </label>
+                                </li>
+
+                                <li className='grid grid-cols-12'>
+                                    <label for="Filter" class="inline-flex items-center col-span-6 gap-2">
+                                        <button
+                                            onClick={() => filterGigs(20000, 40000)}
+                                            type="button"
+                                            id="Filter"
+                                            class="w-5 h-5 border-gray-300 rounded"
+                                        />
+
+                                        <span class="text-sm font-medium text-gray-700">
+                                            ₹20000 - ₹40000
+                                        </span>
+                                    </label>
+                                    <label for="FilterInSto" class="inline-flex items-center col-span-6 gap-2">
+                                        <button
+                                            onClick={() => filterGigs(40000, 9999999999)}
+                                            type="button"
+                                            id="FilterInSto"
+                                            class="w-5 h-5 border-gray-300 rounded"
+                                        />
+
+                                        <span class="text-sm font-medium text-gray-700">
+                                            Above ₹40000
+                                        </span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+                <div className='w-full'>
+
+                </div>
+                <form class="flex items-center w-full ml-5">
+                    <label for="simple-search" class="sr-only">Search</label>
+                    <div class="relative w-full">
+                        <input onChange={(e) => {
+                            let searchValue = e.target.value.toLocaleLowerCase();
+                            setSearch(searchValue);
+                        }} type="text" id="simple-search" class=" border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-white dark:border-gray-300 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
+                    </div>
+                    <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg class="w-4 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                </form>
+            </div>
+            <div className="relative w-5/6 flex flex-col min-w-0 mb-6 break-words bg-gray-50 rounded-2xl bg-clip-border m-auto p-auto border-0 shadow-2xl mt-20">
+
+                <div className="">
+                    <div className="flex flex-wrap ml-10 mt-10 mb-10 sm:ml-44">
+                        {tempGigs.filter(searchData).map((gig) => (
                             <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
                                 <div class="flex flex-col ">
                                     <div class="">
@@ -53,7 +199,7 @@ export default function AllGigs() {
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                                 </svg></button> */}
                                             </div>
-                                            <img src={service?.image} alt="Just a flower" class="w-60 h-52 object-cover rounded-2xl" />
+                                            <img src={gig?.image} alt="Just a flower" class="w-60 h-52 object-cover rounded-2xl" />
                                         </div>
                                         <div class="flex-auto justify-evenly">
                                             <div class="flex flex-wrap ">
@@ -64,12 +210,12 @@ export default function AllGigs() {
                                                     <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.5</span>
                                                 </div>
                                                 <div class="flex items-center w-full justify-between min-w-0 ">
-                                                    <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">{service?.title}</h1>
+                                                    <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">{gig?.title}</h1>
                                                 </div>
                                             </div>
-                                            <div class="text-xl text-black font-bold mt-1">{service?.price}</div>
+                                            <div class="text-xl text-black font-bold mt-1">{gig?.price}</div>
                                             <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                                                <Link class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900" to="/singleGig" state={service?._id}>
+                                                <Link class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900" to="/singleGig" state={gig?._id}>
                                                     <span >View</span>
                                                 </Link>
                                             </div>
@@ -78,50 +224,6 @@ export default function AllGigs() {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </div>
-            <div className="relative w-5/6 h-screen flex flex-col min-w-0 mb-6 break-words bg-gray-50 rounded-2xl bg-clip-border m-auto p-auto border-0 shadow-2xl mt-20">
-                <h1 className="flex py-5 md:px-10 px-5 md:mx-20 mx-5 font-bold text-3xl text-gray-800">
-                    All PRODUCTS
-                </h1>
-                <div className="flex overflow-y-scroll hide-scroll-bar">
-                    <div className="flex flex-wrap ml-14 sm:ml-44">
-                    {products.map((product) => (
-                        <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
-                            <div class="flex flex-col ">
-                                <div class="">
-                                    <div class="relative h-62 w-full mb-3">
-                                        <div class="absolute flex flex-col top-0 right-0 p-3">
-                                            {/* <button class="transition ease-in duration-300 bg-gradient-to-r from-slate-900 to-slate-700  hover:text-purple-500 shadow hover:shadow-md text-gray-500 rounded-full w-8 h-8 text-center p-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                            </svg></button> */}
-                                        </div>
-                                        <img src={product?.image} alt="Just a flower" class=" w-full   object-fill  rounded-2xl" />
-                                    </div>
-                                    <div class="flex-auto justify-evenly">
-                                        <div class="flex flex-wrap ">
-                                            <div class="w-full flex-none text-sm flex items-center text-gray-600">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                                <span class="text-gray-800 whitespace-nowrap mr-3 font-semibold">4.60</span>
-                                            </div>
-                                            <div class="flex items-center w-full justify-between min-w-0 ">
-                                                <h1 class="text-lg mr-auto cursor-pointer text-black hover:text-gray-700 font-semibold truncate mb-1">{product?.title}</h1>
-                                            </div>
-                                        </div>
-                                        <div class="text-xl text-black font-bold mt-1">₹{product?.price}</div>
-                                        <div class="flex space-x-2 text-sm font-medium justify-start mt-3">
-                                            <Link to="/singleGig" state={product?._id} class="transition ease-in duration-300 inline-flex items-center text-sm font-medium mb-2 md:mb-0 bg-gradient-to-r from-purple-900 to-indigo-600 px-5 py-2 hover:shadow-lg tracking-wider text-white rounded-lg hover:bg-gray-900 ">
-                                                <span>View</span>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                         ))}
                     </div>
                 </div>
             </div>

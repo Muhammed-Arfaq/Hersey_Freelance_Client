@@ -3,18 +3,19 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../assets/img/Logo1.png'
 import { Link } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
 export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     const token = localStorage.getItem("jwt")
-
     const logout = () => {
         localStorage.clear();
     }
     return (
         <>
             <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8 border-0 shadow-2xl rounded-lg w-11/12 sm:ml-16 mt-5">
+                <Toaster/>
                 <div>
                     <nav className="flex h-9 items-center justify-between" aria-label="Global">
                         <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
