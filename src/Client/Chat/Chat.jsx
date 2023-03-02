@@ -16,7 +16,7 @@ export default function Chat() {
     const vendorId = currentChat?._id
     const vendorName = currentChat?.fullName
     const userId = localStorage.getItem("userId")
-    
+
     const [message, setMessage] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -38,7 +38,7 @@ export default function Chat() {
 
     const getUserConnections = async () => {
         await userConnections(userId, token).then((result) => {
-            setVendors(result.data.users)
+            setVendors(result.data.sortedUsers)
             setGetCount(result.data.connectionCount)
             console.log(result);
         })
@@ -133,7 +133,7 @@ export default function Chat() {
                                     class="h-full w-full"
                                 />
                             </div>
-                            <div class="text-sm text-white font-semibold mt-2">{vendorName}</div>
+                            <div class="text-sm text-white font-semibold mt-2">{currentChat?.fullName || ""}</div>
 
                         </div>
                         <div class="flex flex-col mt-8">
@@ -141,8 +141,7 @@ export default function Chat() {
                                 <span class="font-bold text-base">Messages</span>
                                 <span
                                     class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
-                                >{msgCount}</span
-                                >
+                                >{msgCount}</span>
                             </div>
                             <div class="flex flex-col space-y-1 mt-5 -mx-2 h-96 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                                 {vendors.map((vendor) => (
@@ -159,7 +158,7 @@ export default function Chat() {
                                         <div
                                             class="flex items-center justify-center ml-auto text-xs text-white bg-gray-500 h-4 w-4 rounded leading-none"
                                         >
-                                            { getCount?.find((count) => count?.userId === vendor?._id )?.count || 0 }
+                                            {getCount?.find((count) => count?.userId === vendor?._id)?.count || 0}
                                         </div>
                                     </button>
                                 ))}
@@ -181,7 +180,11 @@ export default function Chat() {
                                                         <div
                                                             class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
                                                         >
-                                                            A
+                                                            <img
+                                                                src={team1}
+                                                                alt="Avatar"
+                                                                class="h-full w-full rounded-lg"
+                                                            />
                                                         </div>
                                                         <div
                                                             class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
@@ -197,7 +200,11 @@ export default function Chat() {
                                                         <div
                                                             class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
                                                         >
-                                                            A
+                                                            <img
+                                                                src={currentChat?.profilePhoto || team1}
+                                                                alt="Avatar"
+                                                                class="h-full w-full rounded-lg"
+                                                            />
                                                         </div>
                                                         <div
                                                             class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
