@@ -3,7 +3,7 @@ import currentChat from '../Reducer/currentChat'
 import profileReducer from '../Reducer/profileModal'
 import reserveReducer from '../Reducer/reserveModal'
 import reviewReducer from '../Reducer/reviewModal'
-import VendorReviewModal from '../Reducer/VendorReviewModal'
+import VendorReviewModal from '../Reducer/vendorReviewModal'
 import viewReservedGigsReducer from '../Reducer/viewReservedGigs'
 
 export const store = configureStore({
