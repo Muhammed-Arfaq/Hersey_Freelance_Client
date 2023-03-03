@@ -5,10 +5,10 @@ import logo from "../../assets/img/Logo1.png";
 
 import Rating from "@mui/material/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import ReserveModal from "../ReserveModal/reserveModal";
+import ReserveModal from "../ReserveModal/ReserveModal";
 import { setCreateSwitchOn } from "../../Redux/Reducer/reserveModal";
 import { setSwitchOn } from "../../Redux/Reducer/reviewModal";
-import ReviewModal from "../ReviewModal/reviewModal";
+import ReviewModal from "../ReviewModal/ReviewModal";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import { gigReview, viewGig } from "../../API";
