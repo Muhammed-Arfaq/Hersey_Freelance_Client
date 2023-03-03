@@ -144,7 +144,7 @@ export default function Chat() {
                                 >{msgCount}</span>
                             </div>
                             <div class="flex flex-col space-y-1 mt-5 -mx-2 h-96 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-                                {vendors.map((vendor) => (
+                                {vendors?.map((vendor) => (
                                     <button
                                         onClick={() => handleSelect(vendor)}
                                         class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
@@ -172,10 +172,10 @@ export default function Chat() {
                             <div class="flex flex-col h-full overflow-x-auto mb-4 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                                 <div class="flex flex-col h-full">
                                     <div class="grid grid-cols-12 gap-y-2">
-                                        {message.map((msg) =>
-                                            msg.myself ? (
+                                        {message?.map((msg) =>
+                                            msg?.myself ? (
 
-                                                <div key={msg._id} class="col-start-6 col-end-13 p-3 rounded-lg">
+                                                <div key={msg?._id} class="col-start-6 col-end-13 p-3 rounded-lg">
                                                     <div class="flex items-center justify-start flex-row-reverse">
                                                         <div
                                                             class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
@@ -189,13 +189,13 @@ export default function Chat() {
                                                         <div
                                                             class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
                                                         >
-                                                            <div>{msg.message}</div>
+                                                            <div>{msg?.message}</div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                             ) : (
-                                                <div key={msg.message} class="col-start-1 col-end-8 p-3 rounded-lg">
+                                                <div key={msg?.message} class="col-start-1 col-end-8 p-3 rounded-lg">
                                                     <div class="flex flex-row items-center">
                                                         <div
                                                             class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-fuchsia-800 to-indigo-900 text-white flex-shrink-0"
@@ -209,7 +209,7 @@ export default function Chat() {
                                                         <div
                                                             class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
                                                         >
-                                                            <div>{msg.message}</div>
+                                                            <div>{msg?.message}</div>
                                                         </div>
                                                     </div>
                                                 </div>
