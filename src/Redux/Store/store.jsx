@@ -3,7 +3,7 @@ import currentChat from '../Reducer/currentChat'
 import profileReducer from '../Reducer/profileModal'
 import reserveReducer from '../Reducer/reserveModal'
 import reviewReducer from '../Reducer/reviewModal'
-import vendorReducer from '../Reducer/VendorReviewModal'
+import VendorReviewModal from '../Reducer/VendorReviewModal'
 import viewReservedGigsReducer from '../Reducer/viewReservedGigs'
 
 export const store = configureStore({
@@ -11,7 +11,7 @@ export const store = configureStore({
         showReserveDetails: reserveReducer,
         showReviewForm: reviewReducer,
         editProfile: profileReducer,
-        showVendorReviewForm: vendorReducer,
+        showVendorReviewForm: VendorReviewModal,
         viewReservedGigs: viewReservedGigsReducer,
         setCurrentChat: currentChat
     },
