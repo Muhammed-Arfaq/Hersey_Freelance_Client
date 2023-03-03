@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalOff } from "../../Redux/Reducer/VendorReviewModal";
+import { setModalOff } from "../../Redux/Reducer/vendorReviewModal";
 import CloseIcon from '@mui/icons-material/Close';
 import { Rating } from "@mui/material";
 import { addVendorReview } from "../../API";

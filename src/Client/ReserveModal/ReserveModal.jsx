@@ -1,9 +1,8 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCreateSwitchOff } from "../../Redux/Reducer/ReserveModal";
+import { setCreateSwitchOff } from "../../Redux/Reducer/reserveModal";
 import CloseIcon from '@mui/icons-material/Close';
-import axios from "axios";
 import { reserveNow } from "../../API";
 import { useNavigate } from "react-router-dom";
 

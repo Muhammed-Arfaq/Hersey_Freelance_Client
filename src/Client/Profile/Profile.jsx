@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/img/Logo1.png";
 import { useDispatch } from "react-redux";
 import { switchOn } from "../../Redux/Reducer/profileModal";
-import ProfileModal from "../ProfileModal/ProfileModal";
+import ProfileModal from "../ProfileModal/profileModal";
 import Navbar from "../Home/Navbar";
 import { Link } from "react-router-dom";
 import { cancelOrder, reservedGig, userDetail } from "../../API";
-import ReservedGigsModal from "../ReservedGigsModal/ReservedGigsModal";
+import ReservedGigsModal from "../ReservedGigsModal/reservedGigsModal";
 import { orderModalOn } from "../../Redux/Reducer/viewReservedGigs";
 
 export default function Profile() {

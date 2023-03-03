@@ -3,8 +3,8 @@ import logo from '../../assets/img/Logo1.png'
 
 import Rating from '@mui/material/Rating';
 import { useDispatch } from 'react-redux'
-import { setModalOn } from '../../Redux/Reducer/VendorReviewModal'
-import VendorReviewModal from '../VendorReviewModal/VendorReviewModal'
+import { setModalOn } from '../../Redux/Reducer/vendorReviewModal'
+import VendorReviewModal from '../VendorReviewModal/vendorReviewModal'
 import Navbar from '../Home/Navbar'
 import { Link, useLocation } from 'react-router-dom';
 import { vendorReview, viewGigVendor } from '../../API';
