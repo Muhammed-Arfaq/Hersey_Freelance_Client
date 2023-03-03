@@ -14,5 +14,5 @@ export const store = configureStore({
         showVendorReviewForm: VendorReviewModal,
         viewReservedGigs: viewReservedGigsReducer,
         setCurrentChat: currentChat
-    },
+    }
 })
