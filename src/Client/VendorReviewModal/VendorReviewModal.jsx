@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Rating } from "@mui/material";
 import { addVendorReview } from "../../API";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function VendorReviewModal() {
     const cancelButtonRef = useRef(null);
@@ -26,6 +27,7 @@ export default function VendorReviewModal() {
     const eventHandler = (e) => {
         e.preventDefault()
         addVendorReview(reviewData, token).then(() => {
+            toast.success("Review Added Successfully")
             window.location.reload(false)
         })
     }
@@ -56,6 +58,7 @@ export default function VendorReviewModal() {
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
+                    <Toaster/>
                     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                         <Transition.Child
                             as={Fragment}

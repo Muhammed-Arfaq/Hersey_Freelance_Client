@@ -31,7 +31,7 @@ export default function SingleGig() {
         total = total + review.rating
         totalRating = totalRating + 1
     })
-    average = Math.floor(total / totalRating)
+    average = (total / totalRating).toFixed(1)
 
     const viewSingleGig = async () => {
         await viewGig(gigId, token).then((result) => {

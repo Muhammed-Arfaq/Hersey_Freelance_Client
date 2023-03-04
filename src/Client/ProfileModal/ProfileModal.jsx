@@ -5,6 +5,7 @@ import { switchOff } from "../../Redux/Reducer/profileModal";
 import CloseIcon from '@mui/icons-material/Close';
 import { updateUser } from "../../API";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function ProfileModal() {
     const cancelButtonRef = useRef(null);
@@ -45,6 +46,7 @@ export default function ProfileModal() {
     const editUserProf = (e) => {
         e.preventDefault()
         updateUser(userName, dob, gender, phone, location, profilePhoto, token).then(() => {
+            toast.success("Profile Edited Successfully")
             window.location.reload(false)
         })
     }

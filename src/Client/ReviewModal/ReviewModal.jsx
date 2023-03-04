@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Rating } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { addReview } from "../../API";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function ReviewModal() {
     const navigate = useNavigate()
@@ -25,6 +26,7 @@ export default function ReviewModal() {
     const eventHandler = (e) => {
         e.preventDefault()
         addReview(reviewData, token).then(() => {
+            toast.success("Review Added Successfully")
             window.location.reload(false)
         })
     }
@@ -55,6 +57,7 @@ export default function ReviewModal() {
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
+                    <Toaster/>
                     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                         <Transition.Child
                             as={Fragment}

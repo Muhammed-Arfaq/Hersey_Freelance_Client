@@ -23,7 +23,7 @@ export default function VendorDetails() {
     total = total + review.rating
     totalRating = totalRating + 1
   })
-  average = total / totalRating
+  average = (total / totalRating).toFixed(1)
 
   const data = location?.state
   const vendorId = data?.vendor?.vendorId?._id
