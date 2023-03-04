@@ -5,17 +5,27 @@ import logo from '../../assets/img/Logo1.png'
 import { Link } from 'react-router-dom'
 import Navbar from '../Home/Navbar'
 import { allGigs } from '../../API'
+import ReactPaginate from 'react-paginate'
+import './paginate.css'
 
 export default function AllGigs() {
     const [gigs, setGigs] = useState([])
     const [tempGigs, setTempGigs] = useState([])
 
     const [search, setSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(1);
 
     const searchData = (tempProduct) => {
         return search === ""
             ? tempProduct
             : tempProduct.title.toLowerCase().includes(search)
+    };
+
+    const dataToRender = tempGigs.filter(searchData).slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
     };
 
     const allGig = async () => {
@@ -27,7 +37,7 @@ export default function AllGigs() {
     }
 
     const filterGigs = (value1, value2) => {
-        if(value1 == 0 && value2 == 0){
+        if (value1 == 0 && value2 == 0) {
             setTempGigs(gigs)
             return
         }
@@ -189,7 +199,7 @@ export default function AllGigs() {
 
                 <div className="">
                     <div className="flex flex-wrap ml-10 mt-10 mb-10 sm:ml-44">
-                        {tempGigs.filter(searchData).map((gig) => (
+                        {dataToRender.map((gig) => (
                             <div class="max-w-md w-72 bg-gray-100 shadow-xl transform transition hover:scale-95 duration-300 ease-in-out rounded-xl p-6 mr-5 mb-6">
                                 <div class="flex flex-col ">
                                     <div class="">
@@ -225,6 +235,20 @@ export default function AllGigs() {
                             </div>
                         ))}
                     </div>
+                    <ReactPaginate
+                        pageCount={Math.ceil(tempGigs.filter(searchData).length / itemsPerPage)}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName="pagination"
+                        activeClassName="active"
+                        previousLabel="Previous"
+                        nextLabel="Next"
+                        pageLinkClassName="page-link"
+                        previousLinkClassName="page-link"
+                        nextLinkClassName="page-link"
+                        disabledClassName="disabled"
+                    />
                 </div>
             </div>
             <footer aria-label="Site Footer" class="bg-white">
