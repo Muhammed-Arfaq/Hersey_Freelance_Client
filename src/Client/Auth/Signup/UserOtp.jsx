@@ -28,18 +28,20 @@ export default function UserOtp() {
   const eventHandler = (e) => {
     e.preventDefault()
 
-    axios.post("http://localhost:3500/verifyOTP",{
+    axios.post("http://localhost:3500/verifyOTP", {
       otp
-    }).then(() =>{
+    }).then(() => {
       toast.success("Signup Successfull")
-      navigate("/login")
+      setTimeout(() => {
+        navigate("/login")
+      }, 800)
     })
   }
 
   return (
     <>
       <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
-        <Toaster/>
+        <Toaster />
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
@@ -112,7 +114,7 @@ export default function UserOtp() {
                       </a>
                     ))}
                   </div>
-                 
+
                   <div className="py-6">
                     <a
                       href="/login"
@@ -188,7 +190,7 @@ export default function UserOtp() {
                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Enter OTP"
                         value={otp}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                           setOtp(e.target.value)
                         }}
                       />

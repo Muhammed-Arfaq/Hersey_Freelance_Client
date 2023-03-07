@@ -13,6 +13,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Home/Navbar";
 import { gigReview, viewGig } from "../../API";
 import { setCurrentChat } from "../../Redux/Reducer/currentChat";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function SingleGig() {
     const navigate = useNavigate()
@@ -202,7 +203,7 @@ export default function SingleGig() {
                                                     <div class="flex items-center space-x-2">
                                                         <img
                                                             class="w-8 rounded-full"
-                                                            src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
+                                                            src={review?.userId?.profilePhoto || <AccountCircleIcon/>}
                                                             alt="sara"
                                                         />
                                                         <h2 class="text-gray-800 font-bold">
