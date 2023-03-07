@@ -2,6 +2,7 @@ import React from "react";
 import github from '../../../assets/img/github.svg'
 import google from '../../../assets/img/google.svg'
 import bg2 from '../../../assets/img/wlppr1.jpg'
+import axios from '../../../axios'
 
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
@@ -28,7 +29,7 @@ export default function UserOtp() {
   const eventHandler = (e) => {
     e.preventDefault()
 
-    axios.post("http://localhost:3500/verifyOTP", {
+    axios.post("/verifyOTP", {
       otp
     }).then(() => {
       toast.success("Signup Successfull")

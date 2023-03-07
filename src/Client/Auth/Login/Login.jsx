@@ -2,6 +2,7 @@ import React from "react";
 import github from '../../../assets/img/github.svg'
 import google from '../../../assets/img/google.svg'
 import bg2 from '../../../assets/img/wlppr1.jpg'
+import axios from '../../../axios'
 
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
@@ -39,7 +40,7 @@ export default function Login() {
     await userLogin
       .validate(formData, { abortEarly: false })
       .then(() => {
-        axios.post("http://localhost:3500/login",{
+        axios.post("/login",{
             email,
             password
         }).then((result) => {
