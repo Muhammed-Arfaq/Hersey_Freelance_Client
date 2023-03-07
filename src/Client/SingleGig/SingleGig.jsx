@@ -202,7 +202,7 @@ export default function SingleGig() {
                                                 <header class="sm:flex sm:items-center">
                                                     <div class="flex items-center space-x-2">
                                                         <img
-                                                            class="w-8 rounded-full"
+                                                            class="w-8 h-8 object-cover rounded-full"
                                                             src={review?.userId?.profilePhoto || <AccountCircleIcon/>}
                                                             alt="sara"
                                                         />
