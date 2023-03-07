@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../../../assets/img/Logo1.png'
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { userSignup } from "../../../YupSchema/ClientSignup";
 import toast, { Toaster } from "react-hot-toast";
