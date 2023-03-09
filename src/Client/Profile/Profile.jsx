@@ -30,7 +30,7 @@ export default function Profile() {
         }).catch(err => console.log(err));
     }
 
-    console.log(reserved);
+    // console.log(reserved);
 
     const cancelGig = (orderId) => {
         Swal.fire({
@@ -43,7 +43,7 @@ export default function Profile() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 cancelOrder(orderId, token).then(() => {
-                    toast.success("Order Cancelled")
+                    toast.success("Order Cancelled Successfully")
                     window.location.reload(false)
                 }).catch(err => console.log(err));
             }
@@ -194,7 +194,7 @@ export default function Profile() {
                                                             { orders?.status == 'Cancelled' ?  
                                                             <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
                                                             : 
-                                                            <a href=""><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
+                                                            <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs cursor-pointer rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
                                                         }
                                                         </td>
                                                     </tr>
