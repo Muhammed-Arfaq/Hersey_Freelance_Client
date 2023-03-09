@@ -191,9 +191,11 @@ export default function Profile() {
                                                             <span className="font-semibold leading-tight text-base">{orders?.status}</span>
                                                         </td>
                                                         <td className="p-2 align-middle text-center bg-transparent whitespace-nowrap shadow-transparent">
-                                                            { orders?.status == 'Cancelled' ?  
+                                                            { orders?.status == 'Cancelled' ? 
                                                             <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
-                                                            : 
+                                                            : orders?.status == 'Completed' ? 
+                                                            <a><span className="bg-gradient-to-tl from-green-600 to-green-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Completed</span></a>
+                                                            :
                                                             <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs cursor-pointer rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
                                                         }
                                                         </td>
