@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { cancelOrder, reservedGig, userDetail } from "../../API";
 import ReservedGigsModal from "../ReservedGigsModal/ReservedGigsModal";
 import { orderModalOn } from "../../Redux/Reducer/viewReservedGigs";
+import { toast, Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 export default function Profile() {
     const dispatch = useDispatch()
@@ -19,20 +21,32 @@ export default function Profile() {
     const userDetails = async () => {
         await userDetail(token).then((result) => {
             setUser(result.data.data.profile)
-        })
+        }).catch(err => console.log(err));
     }
 
     const reservedGigs = async () => {
         await reservedGig(token).then((result) => {
             setReserved(result.data.data.reserved);
-        })
+        }).catch(err => console.log(err));
     }
 
     console.log(reserved);
 
     const cancelGig = (orderId) => {
-        cancelOrder(orderId, token).then(() => {
-            window.location.reload(false)
+        Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Cancel Order!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                cancelOrder(orderId, token).then(() => {
+                    toast.success("Order Cancelled")
+                    window.location.reload(false)
+                }).catch(err => console.log(err));
+            }
         })
     }
 
@@ -49,6 +63,7 @@ export default function Profile() {
             <Navbar />
 
             <div class="h-full bg-white p-8">
+                <Toaster/>
                 <div class="bg-white rounded-lg shadow-xl pb-8">
                     <div class="w-full h-[250px]">
                         <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg" />
@@ -85,7 +100,7 @@ export default function Profile() {
                 </div>
 
                 <div class="my-4 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
-                    <div class="w-full h-fit flex flex-col 2xl:w-1/3 sticky top-0">
+                    <div class="w-full h-fit flex flex-col 2xl:w-1/3 2xl:sticky top-0">
                         <div class="flex-1 bg-white rounded-lg shadow-xl p-8">
                             <h4 class="text-xl text-gray-900 font-bold">Personal Info</h4>
                             <ul class="mt-2 text-gray-700">

@@ -35,7 +35,7 @@ export default function UserOtp() {
       setTimeout(() => {
         navigate("/login")
       }, 800)
-    })
+    }).catch(err => console.log(err));
   }
 
   return (

@@ -5,19 +5,22 @@ import { switchOff } from "../../Redux/Reducer/profileModal";
 import CloseIcon from '@mui/icons-material/Close';
 import { updateUser } from "../../API";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function ProfileModal() {
     const cancelButtonRef = useRef(null);
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const [userName, setUserName] = useState("")
-    const [dob, setDob] = useState("")
-    const [gender, setGender] = useState("")
-    const [phone, setPhone] = useState("")
-    const [location, setLocation] = useState("")
-    const [profilePhoto, setProfilePhoto] = useState("")
+    const show = useSelector((state) => state.editProfile.show)
+    const data = useSelector((state) => state.editProfile.data)
+
+    const [userName, setUserName] = useState(data?.userName || "")
+    const [dob, setDob] = useState(data?.dob || "")
+    const [gender, setGender] = useState(data?.gender || "")
+    const [phone, setPhone] = useState(data?.phone || "")
+    const [location, setLocation] = useState(data?.location || "")
+    const [profilePhoto, setProfilePhoto] = useState(data?.profilePhoto || "")
     const token = localStorage.getItem("jwt")
 
     function converToBase64(file) {
@@ -40,15 +43,15 @@ export default function ProfileModal() {
         setProfilePhoto(base64);
     };
 
-    const show = useSelector((state) => state.editProfile.show)
-    const data = useSelector((state) => state.editProfile.data)
-
     const editUserProf = (e) => {
         e.preventDefault()
         updateUser(userName, dob, gender, phone, location, profilePhoto, token).then(() => {
-            toast.success("Profile Edited Successfully")
+            toast.success("Profile Edited Successfully", {
+                position: "bottom-right",
+                autoClose: 10000,
+            })
             window.location.reload(false)
-        })
+        }).catch(err => console.log(err));
     }
 
     return (
@@ -72,6 +75,7 @@ export default function ProfileModal() {
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
+                    <Toaster/>
                     <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                         <Transition.Child
                             as={Fragment}
@@ -98,7 +102,7 @@ export default function ProfileModal() {
                                                     type="text"
                                                     name="first-name"
                                                     id="first-name"
-                                                    placeholder={data?.fullName}
+                                                    value={data?.fullName}
                                                     autoComplete="given-name"
                                                     className="mt-5 block w-full rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -116,7 +120,6 @@ export default function ProfileModal() {
                                                     onChange={(e) => {
                                                         setUserName(e.target.value)
                                                     }}
-                                                    placeholder={data?.userName}
                                                     autoComplete="family-name"
                                                     className="mt-5 block w-full rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -130,7 +133,7 @@ export default function ProfileModal() {
                                                     type="text"
                                                     name="email-address"
                                                     id="email-address"
-                                                    placeholder={data?.email}
+                                                    value={data?.email}
                                                     autoComplete="email"
                                                     className="mt-5 block w-full rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -148,7 +151,6 @@ export default function ProfileModal() {
                                                     onChange={(e) => {
                                                         setDob(e.target.value)
                                                     }}
-                                                    placeholder={data?.dob}
                                                     autoComplete="dob"
                                                     className="mt-5 block w-60 h-9 rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -166,7 +168,6 @@ export default function ProfileModal() {
                                                     onChange={(e) => {
                                                         setPhone(e.target.value)
                                                     }}
-                                                    placeholder={data?.phone}
                                                     autoComplete="address-level2"
                                                     className="mt-5 block w-full rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -186,7 +187,6 @@ export default function ProfileModal() {
                                                     onChange={(e) => {
                                                         setGender(e.target.value)
                                                     }}
-                                                    placeholder={data?.gender}
                                                     autoComplete="postal-code"
                                                     className="mt-5 block w-full rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -204,7 +204,6 @@ export default function ProfileModal() {
                                                     onChange={(e) => {
                                                         setLocation(e.target.value)
                                                     }}
-                                                    placeholder={data?.location}
                                                     autoComplete="street-address"
                                                     className="mt-5 block w-full rounded-lg border-gray-300 shadow-md border-0 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                 />
@@ -216,10 +215,10 @@ export default function ProfileModal() {
                                                     <div class="flex items-center justify-center w-full">
                                                         <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-28 p-10 group text-center">
                                                             <div class="h-full w-full text-center flex flex-col justify-center items-center">
-                                                                <img src={ profilePhoto } className="h-16 rounded-lg" />
+                                                                <img src={data?.profilePhoto || profilePhoto} className="h-16 rounded-lg" />
                                                                 <p class="pointer-none text-gray-500 "><span class="text-base font-bold cursor-pointer">Upload</span> your profile photo  <br /></p>
                                                             </div>
-                                                            <input type="file" class="hidden" onChange={onUpload}/>
+                                                            <input type="file" class="hidden" onChange={onUpload} />
                                                         </label>
                                                     </div>
                                                 </div>

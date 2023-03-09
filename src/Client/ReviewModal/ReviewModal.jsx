@@ -28,7 +28,7 @@ export default function ReviewModal() {
         addReview(reviewData, token).then(() => {
             toast.success("Review Added Successfully")
             window.location.reload(false)
-        })
+        }).catch(err => console.log(err));
     }
 
     const show = useSelector((state) => state.showReviewForm.show)

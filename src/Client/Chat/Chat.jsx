@@ -29,22 +29,22 @@ export default function Chat() {
         messageCount(userId, token).then((result) => {
             setMsgCount(result.data.count);
             console.log(result.data);
-        })
+        }).catch(err => console.log(err));
     }
 
 
     const socket = useRef();
-    const scrolRef = useRef();
+    // const scrolRef = useRef();
 
     const getUserConnections = async () => {
         await userConnections(userId, token).then((result) => {
             setVendors(result.data.sortedUsers)
             setGetCount(result.data.connectionCount)
             console.log(result);
-        })
+        }).catch(err => console.log(err));
     }
 
-    console.log(getCount);
+    // console.log(getCount);
 
     useEffect(() => {
         getMessageCount()
@@ -75,9 +75,9 @@ export default function Chat() {
         fetchMessages(currentChat._id);
     }, [message, currentChat._id]);
 
-    useEffect(() => {
-        scrolRef.current.scrollIntoView({ behavior: "smooth" })
-    })
+    // useEffect(() => {
+    //     scrolRef.current.scrollIntoView({ behavior: "smooth" })
+    // })
 
     useEffect(() => {
         if (currentChat._id !== "") {
@@ -212,7 +212,7 @@ export default function Chat() {
                                                 </div>
                                             )
                                         )}
-                                        <div ref={scrolRef} />
+                                        {/* <div ref={scrolRef} /> */}
                                     </div>
                                 </div>
                             </div>
