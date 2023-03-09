@@ -73,7 +73,7 @@ export default function Chat() {
             }
         };
         fetchMessages(currentChat._id);
-    }, [arrivalMessage, currentChat._id]);
+    }, [message, currentChat._id]);
 
     useEffect(() => {
         scrolRef.current.scrollIntoView({ behavior: "smooth" })
@@ -81,7 +81,7 @@ export default function Chat() {
 
     useEffect(() => {
         if (currentChat._id !== "") {
-            socket.current = io.connect("http://localhost:3500")
+            socket.current = io.connect("https://www.herseymensformals.ml/")
             console.log(userId);
             socket.current.emit("addUser", userId);
         }
@@ -216,7 +216,7 @@ export default function Chat() {
                                     </div>
                                 </div>
                             </div>
-                            <div
+                            <form onSubmit={sendmsg}
                                 class="flex flex-row items-center h-6 rounded-xl  w-full px-4"
                             >
 
@@ -231,7 +231,7 @@ export default function Chat() {
                                     </div>
                                 </div>
                                 <div class="ml-4">
-                                    <button onClick={sendmsg} class="flex items-center justify-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                                    <button type="submit" class="flex items-center justify-center bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-xl text-white px-4 py-1 flex-shrink-0">
                                         <span>Send</span>
                                         <span class="ml-2">
                                             <svg
@@ -251,7 +251,7 @@ export default function Chat() {
                                         </span>
                                     </button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

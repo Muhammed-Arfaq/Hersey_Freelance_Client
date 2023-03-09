@@ -17,7 +17,7 @@ function Footer() {
 
                         <Link
                             class="inline-flex items-center rounded-full border border-white bg-white px-8 py-3 text-indigo-600 hover:bg-transparent hover:text-white focus:outline-none focus:ring active:bg-white/90"
-                            to="http://127.0.0.1:4500/vendor/signup"
+                            to="https://www.herseymensformals.ml/"
                         >
                             <span class="text-sm font-medium"> Let's Get Started </span>
 
