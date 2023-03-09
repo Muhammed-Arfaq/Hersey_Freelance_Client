@@ -87,7 +87,8 @@ export default function Chat() {
         }
     }, [userId])
 
-    const sendmsg = async () => {
+    const sendmsg = async (e) => {
+        e.preventDefault()
         const messages = {
             myself: true,
             message: inputMessage
