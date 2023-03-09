@@ -65,7 +65,7 @@ export default function Chat() {
             }
         };
         fetchMessages(currentChat._id);
-    }, [ currentChat._id]);
+    }, [socket, message, currentChat._id]);
 
 
 
