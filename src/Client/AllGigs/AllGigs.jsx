@@ -33,7 +33,7 @@ export default function AllGigs() {
             console.log(result);
             setGigs(result.data.data.allGigs);
             setTempGigs(result.data.data.allGigs);
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     const filterGigs = (value1, value2) => {

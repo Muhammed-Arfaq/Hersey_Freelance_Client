@@ -29,7 +29,7 @@ export default function Chat() {
         messageCount(userId, token).then((result) => {
             setMsgCount(result.data.count);
             console.log(result.data);
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
 
@@ -41,7 +41,7 @@ export default function Chat() {
             setVendors(result.data.sortedUsers)
             setGetCount(result.data.connectionCount)
             console.log(result);
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     // console.log(getCount);

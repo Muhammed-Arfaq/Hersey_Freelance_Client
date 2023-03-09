@@ -21,13 +21,13 @@ export default function Profile() {
     const userDetails = async () => {
         await userDetail(token).then((result) => {
             setUser(result.data.data.profile)
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     const reservedGigs = async () => {
         await reservedGig(token).then((result) => {
             setReserved(result.data.data.reserved);
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     // console.log(reserved);
@@ -45,7 +45,7 @@ export default function Profile() {
                 cancelOrder(orderId, token).then(() => {
                     toast.success("Order Cancelled Successfully")
                     window.location.reload(false)
-                }).catch(err => console.log(err));
+                }).catch(() => toast.error("Internal Error"));
             }
         })
     }

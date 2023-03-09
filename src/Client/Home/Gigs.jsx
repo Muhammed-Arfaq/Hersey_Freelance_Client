@@ -11,13 +11,13 @@ export default function Gigs({ heading }) {
   const product = async () => {
     await allProduct().then((result) => {
       setProducts(result.data.data.products)
-    }).catch(err => console.log(err));
+    }).catch(() => toast.error("Internal Error"));
   }
 
   const service = async () => {
     await allService().then((result) => {
       setServices(result.data.data.services);
-    }).catch(err => console.log(err));
+    }).catch(() => toast.error("Internal Error"));
   }
 
   useEffect(() => {

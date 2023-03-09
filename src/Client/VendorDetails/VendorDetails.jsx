@@ -31,13 +31,13 @@ export default function VendorDetails() {
   const viewAllGigs = async () => {
     await viewGigVendor(vendorId, token).then((result) => {
       setGig(result.data.data.viewGig);
-    }).catch(err => console.log(err));
+    }).catch(() => toast.error("Internal Error"));
   }
 
   const viewVendorRatings = async () => {
     await vendorReview(vendorId, token).then((result) => {
       setReview(result.data.data.review);
-    }).catch(err => console.log(err));
+    }).catch(() => toast.error("Internal Error"));
   }
 
   useEffect(() => {

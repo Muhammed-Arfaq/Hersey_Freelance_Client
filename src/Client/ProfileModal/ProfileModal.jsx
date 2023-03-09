@@ -51,7 +51,7 @@ export default function ProfileModal() {
                 autoClose: 10000,
             })
             window.location.reload(false)
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     return (

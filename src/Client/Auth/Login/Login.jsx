@@ -62,13 +62,13 @@ export default function Login() {
         })
       })
       .catch((validationErrors) => {
-        console.log(validationErrors,"dtf");
+        // console.log(validationErrors,"dtf");
         const errors = validationErrors.inner.reduce((acc, error) => {
           return { ...acc, [error.path]: error.message };
         }, {});
 
         setErrors(errors);
-        console.log(errors);
+        // console.log(errors);
 
         Object.values(errors).forEach((error) => {
           toast.error(error, {

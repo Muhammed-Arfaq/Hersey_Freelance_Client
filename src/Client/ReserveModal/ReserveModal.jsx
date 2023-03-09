@@ -21,7 +21,7 @@ export default function ReserveModal() {
         reserveNow(gig, requirements, token).then(() => {
             toast.success("Gig Reserved Successfully")
             window.location.reload(false)
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     const dispatch = useDispatch()

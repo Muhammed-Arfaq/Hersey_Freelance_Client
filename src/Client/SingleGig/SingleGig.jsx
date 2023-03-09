@@ -37,13 +37,13 @@ export default function SingleGig() {
     const viewSingleGig = async () => {
         await viewGig(gigId, token).then((result) => {
             setSingleGig(result.data.data.singleGig);
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     const gigRating = async () => {
         await gigReview(token, gigId).then((result) => {
             setReview(result.data.data.review);
-        }).catch(err => console.log(err));
+        }).catch(() => toast.error("Internal Error"));
     }
 
     useEffect(() => {
