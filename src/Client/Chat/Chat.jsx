@@ -56,6 +56,14 @@ export default function Chat() {
     };
 
     useEffect(() => {
+        if (socket.current) {
+            socket.current.on("msg-receive", (msg) => {
+                setArrivalMessage({ myself: false, message: msg })
+            })
+        }
+    }, [])
+
+    useEffect(() => {
         const fetchMessages = async (vendor) => {
             if (vendor) {
                 const token = localStorage.getItem("jwt");
@@ -65,9 +73,7 @@ export default function Chat() {
             }
         };
         fetchMessages(currentChat._id);
-    }, [socket, message, currentChat._id]);
-
-
+    }, [arrivalMessage, currentChat._id]);
 
     useEffect(() => {
         scrolRef.current.scrollIntoView({ behavior: "smooth" })
@@ -103,15 +109,6 @@ export default function Chat() {
         setMessage(message.concat(messages))
         setInputMessage("")
     }
-
-    useEffect(() => {
-        if (socket.current) {
-            socket.current.on("msg-receive", (msg) => {
-                setArrivalMessage({ myself: false, message: msg })
-            })
-        }
-    }, [arrivalMessage])
-
 
     useEffect(() => {
         arrivalMessage && setMessage((pre) => [...pre, arrivalMessage])
