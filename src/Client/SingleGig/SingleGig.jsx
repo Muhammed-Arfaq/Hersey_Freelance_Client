@@ -113,7 +113,7 @@ export default function SingleGig() {
 
                             <div class="mt-8">
                                 <a
-                                    class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500"
+                                    class="inline-block w-56 text-center cursor-pointer rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500"
                                     onClick={() => dispatch(setCreateSwitchOn(singleGig))}
                                 >
                                     Reserve Now
@@ -124,7 +124,7 @@ export default function SingleGig() {
                                             dispatch(setCurrentChat(singleGig?.vendorId))
                                             navigate("/chat")
                                         }}
-                                        class="inline-block w-56 text-center rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500">
+                                        class="inline-block w-56 text-center cursor-pointer rounded bg-gradient-to-r from-slate-900 to-slate-700 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500">
                                         Contact Vendor
                                     </button>
                                 </div>

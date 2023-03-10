@@ -28,7 +28,7 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const [errors, setErrors] = useState({})
 
-  const eventHandler = async(e) => {
+  const eventHandler = async (e) => {
     e.preventDefault()
 
     const formData = {
@@ -39,23 +39,23 @@ export default function Login() {
     await userLogin
       .validate(formData, { abortEarly: false })
       .then(() => {
-        axios.post("/login",{
-            email,
-            password
+        axios.post("/login", {
+          email,
+          password
         }).then((result) => {
-          if(result.data.status == "Success") {
-          toast.success("Login Successfull", {
-            position: "bottom-right",
-            autoClose: 1000,
+          if (result.data.status == "Success") {
+            toast.success("Login Successfull", {
+              position: "bottom-right",
+              autoClose: 1000,
             })
-          localStorage.setItem("jwt", result.data.token)
-          localStorage.setItem( "userId", result.data.data.user._id )
-          localStorage.setItem( "userName", result.data.data.user.userName )
-          localStorage.setItem( "email", result.data.data.user.email )
-          setTimeout(()=>{
-            navigate('/')
-          },1500)
-          
+            localStorage.setItem("jwt", result.data.token)
+            localStorage.setItem("userId", result.data.data.user._id)
+            localStorage.setItem("userName", result.data.data.user.userName)
+            localStorage.setItem("email", result.data.data.user.email)
+            setTimeout(() => {
+              navigate('/')
+            }, 1500)
+
           } else {
             toast.error("Wrong Email or Password")
           }
@@ -74,7 +74,7 @@ export default function Login() {
           toast.error(error, {
             position: "bottom-right",
             autoClose: 10000,
-            })
+          })
         });
       });
   }
@@ -82,7 +82,7 @@ export default function Login() {
   return (
     <>
       <div className="relative z-10 px-6 pt-4 pb-4 lg:px-8">
-      <Toaster/>
+        <Toaster />
         <div>
           <nav className="flex h-9 items-center justify-between" aria-label="Global">
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
@@ -108,7 +108,7 @@ export default function Login() {
                 </a>
               ))}
             </div>
-            
+
             <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
               <a
                 href="/signup"
@@ -155,7 +155,7 @@ export default function Login() {
                       </a>
                     ))}
                   </div>
-                  
+
                   <div className="py-6">
                     <a
                       href="/signup"
@@ -176,7 +176,7 @@ export default function Login() {
 
         ><img
             className="w-full"
-            style={{ height: "116.4%" }}
+            style={{ height: "126.3%" }}
             src={bg2}
             alt=""
           /></div>
@@ -185,7 +185,7 @@ export default function Login() {
             <div className="w-full lg:w-4/12 px-4">
               <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0 bg-gray-50 bg-opacity-50 backdrop-blur">
                 <div className="rounded-t mb-0 px-6 py-6">
-                  <div className="text-center mb-3">
+                  {/* <div className="text-center mb-3">
                     <h6 className="text-blueGray-700 text-sm font-bold">
                       Sign in with
                     </h6>
@@ -213,15 +213,15 @@ export default function Login() {
                       />
                       Google
                     </button>
-                  </div>
+                  </div> */}
                   <hr className="mt-6 border-b-1 border-blueGray-300" />
                 </div>
                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                   <div className="text-blueGray-600 text-center mb-3 font-bold">
-                    <small>Or sign in with credentials</small>
+                    <h6 className="text-blueGray-700 text-sm font-bold">Sign in with credentials</h6>
                   </div>
                   <form onSubmit={eventHandler}>
-                    <div className="relative w-full mb-3">
+                    <div className="relative mt-10 w-full mb-3">
                       <label
                         className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                         htmlFor="grid-password"
@@ -233,7 +233,7 @@ export default function Login() {
                         className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         placeholder="Email"
                         value={email}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                           setEmail(e.target.value)
                         }}
                       />
@@ -258,14 +258,14 @@ export default function Login() {
                     </div>
                     <div>
                       <label className="inline-flex items-center cursor-pointer">
-                        <input
+                        {/* <input
                           id="customCheckLogin"
                           type="checkbox"
                           className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
                         />
                         <span className="ml-2 text-sm font-semibold text-blueGray-600">
                           Remember me
-                        </span>
+                        </span> */}
                       </label>
                     </div>
 
