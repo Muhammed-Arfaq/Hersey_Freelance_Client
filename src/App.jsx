@@ -5,6 +5,7 @@ import Signup from './Client/Auth/Signup/Signup';
 import UserOtp from './Client/Auth/Signup/UserOtp';
 import Chat from './Client/Chat/Chat';
 import Home from './Client/Home/Home';
+import PageNotFound from './Client/PageNotFound/PageNotFound';
 import Profile from './Client/Profile/Profile';
 import SingleGig from './Client/SingleGig/SingleGig';
 import VendorDetails from './Client/VendorDetails/VendorDetails';
@@ -25,7 +26,7 @@ function App() {
           <Route path='/vendorDetails' element={<ProtectedRoutes><VendorDetails /></ProtectedRoutes>} />
           <Route path='/chat' element={<ProtectedRoutes><Chat /></ProtectedRoutes>} />
           <Route path='/profile' element={<ProtectedRoutes><Profile /></ProtectedRoutes>} />
-
+          <Route path='*' element={<PageNotFound/>}/> 
         </Routes>
       </Router>
     </div>
