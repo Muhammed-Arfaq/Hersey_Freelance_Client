@@ -10,7 +10,7 @@ import ReservedGigsModal from "../ReservedGigsModal/ReservedGigsModal";
 import { orderModalOn } from "../../Redux/Reducer/viewReservedGigs";
 import { toast, Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
-import moment from "moment";
+import moment from "moment/moment";
 
 export default function Profile() {
     const dispatch = useDispatch()
