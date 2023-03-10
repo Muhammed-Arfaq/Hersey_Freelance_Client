@@ -41,7 +41,7 @@ export default function AllGigs() {
             setTempGigs(gigs)
             return
         }
-        let filteredGigs = gigs.filter((gig) => gig.price > value1 && gig.price < value2)
+        let filteredGigs = gigs.filter((gig) => gig.price >= value1 && gig.price < value2)
         setTempGigs(filteredGigs)
     }
 
