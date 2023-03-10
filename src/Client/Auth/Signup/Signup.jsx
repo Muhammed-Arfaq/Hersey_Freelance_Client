@@ -57,7 +57,7 @@ export default function Signup() {
           passwordConfirm
         }).then(() => {
           navigate("/userOtp")
-        })
+        }).catch(() => toast.error("Email already exists!!!"))
       })
       .catch((validationErrors) => {
         // console.log(validationErrors, "dtf");
