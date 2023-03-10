@@ -8,6 +8,7 @@ import VendorReviewModal from '../VendorReviewModal/VendorReviewModal'
 import Navbar from '../Home/Navbar'
 import { Link, useLocation } from 'react-router-dom';
 import { vendorReview, viewGigVendor } from '../../API';
+import moment from 'moment/moment';
 
 export default function VendorDetails() {
   const dispatch = useDispatch()
@@ -206,7 +207,7 @@ export default function VendorDetails() {
 
                   <footer class="mt-4">
                     <p class="text-xs text-gray-500">
-                      {review?.userId?.fullName} - {review?.date}
+                      {review?.userId?.fullName} - {moment(review?.date).format("lll")}
                     </p>
                   </footer>
                 </blockquote>

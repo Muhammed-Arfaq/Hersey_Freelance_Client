@@ -14,6 +14,7 @@ import Navbar from "../Home/Navbar";
 import { gigReview, viewGig } from "../../API";
 import { setCurrentChat } from "../../Redux/Reducer/currentChat";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import moment from "moment/moment";
 
 export default function SingleGig() {
     const navigate = useNavigate()
@@ -78,7 +79,7 @@ export default function SingleGig() {
                                         <div class="flex items-center mt-1">
                                             <img
                                                 class="w-10 rounded-full"
-                                                src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
+                                                src={singleGig?.vendorId?.profilePhoto}
                                                 alt="sara"
                                             />
                                             <h2 class="text-gray-800 font-bold cursor-pointer ml-2">
@@ -102,6 +103,7 @@ export default function SingleGig() {
                                                 <p className="col-span-1">
                                                     <Rating name="read-only" precision={0.5} value={average} readOnly />
                                                 </p>
+                                                <p className="col-span-1 ml-10 text-gray-600">({average == "NaN" ? 0 : average})</p>
                                             </div>
                                             <p className="mt-3">{singleGig?.overview}</p>
                                         </div>
@@ -148,7 +150,7 @@ export default function SingleGig() {
                                     >
                                         <img
                                             class="w-24 rounded-full"
-                                            src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
+                                            src={singleGig?.vendorId?.profilePhoto}
                                             alt="sara"
                                         />
                                     </div>
@@ -184,7 +186,7 @@ export default function SingleGig() {
 
                                     <div class="mt-4 flex items-center">
                                         <p class="text-3xl font-medium">
-                                            {average}
+                                            ({average == "NaN" ? 0 : average})
                                         </p>
                                         <p className="ml-3 mt-2">
                                             <Rating name="read-only" precision={0.5} value={average} readOnly />
@@ -203,7 +205,7 @@ export default function SingleGig() {
                                                     <div class="flex items-center space-x-2">
                                                         <img
                                                             class="w-8 h-8 object-cover rounded-full"
-                                                            src={review?.userId?.profilePhoto || <AccountCircleIcon/>}
+                                                            src={review?.userId?.profilePhoto || <AccountCircleIcon />}
                                                             alt="sara"
                                                         />
                                                         <h2 class="text-gray-800 font-bold">
@@ -228,7 +230,7 @@ export default function SingleGig() {
 
                                                 <footer class="mt-4">
                                                     <p class="text-xs text-gray-500">
-                                                        {review?.userId?.fullName} - {review?.date}
+                                                        {review?.userId?.fullName} - {moment(review?.date).format("lll")}
                                                     </p>
                                                 </footer>
                                             </blockquote>

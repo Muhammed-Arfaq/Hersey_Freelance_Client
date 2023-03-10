@@ -10,6 +10,7 @@ import ReservedGigsModal from "../ReservedGigsModal/ReservedGigsModal";
 import { orderModalOn } from "../../Redux/Reducer/viewReservedGigs";
 import { toast, Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 export default function Profile() {
     const dispatch = useDispatch()
@@ -30,7 +31,7 @@ export default function Profile() {
         }).catch(() => toast.error("Internal Error"));
     }
 
-    // console.log(reserved);
+    console.log(reserved);
 
     const cancelGig = (orderId) => {
         Swal.fire({
@@ -63,7 +64,7 @@ export default function Profile() {
             <Navbar />
 
             <div class="h-full bg-white p-8">
-                <Toaster/>
+                <Toaster />
                 <div class="bg-white rounded-lg shadow-xl pb-8">
                     <div class="w-full h-[250px]">
                         <img src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg" class="w-full h-full rounded-tl-lg rounded-tr-lg" />
@@ -110,11 +111,11 @@ export default function Profile() {
                                 </li>
                                 <li class="flex py-2">
                                     <span class="font-bold w-24">Birthday:</span>
-                                    <span class="text-gray-700">{user?.dob}</span>
+                                    <span class="text-gray-700">{moment(user?.dob).format("ll")}</span>
                                 </li>
                                 <li class="flex py-2">
                                     <span class="font-bold w-24">Joined:</span>
-                                    <span class="text-gray-700">{user?.date}</span>
+                                    <span class="text-gray-700">{moment(user?.date).format("lll")}</span>
                                 </li>
                                 <li class="flex py-2">
                                     <span class="font-bold w-24">Gender:</span>
@@ -138,7 +139,7 @@ export default function Profile() {
                             <h4 class="text-xl text-gray-900 font-bold">Recently Reserved Gigs</h4>
                             <div class="relative px-4">
                                 <div class="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
-                                {reserved.map((reserved) => (
+                                {reserved.length != 0 ? reserved.map((reserved) => (
                                     <div class="flex items-center w-full my-6 -ml-1.5">
                                         <div class="w-1/12 z-10">
                                             <div class="w-3.5 h-3.5 bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-full"></div>
@@ -146,10 +147,12 @@ export default function Profile() {
                                         <div class="w-11/12">
                                             <p class="text-sm">
                                                 {reserved?.title} <a href="#" class="text-blue-600 font-bold"> - {reserved?.status}</a>.</p>
-                                            <p class="text-xs text-gray-500">{reserved?.date}</p>
+                                            <p class="text-xs text-gray-500">{moment(reserved?.date).format("lll")}</p>
                                         </div>
                                     </div>
-                                ))}
+                                ))
+                                    : <h1 className="font-mono font-bold text-2xl mt-12 flex justify-center text-black ">No Reservations</h1>
+                                }
                             </div>
                         </div>
                     </div>
@@ -161,48 +164,52 @@ export default function Profile() {
                             <div className="flex overflow-y-scroll hide-scroll-bar">
                                 <div className="flex-auto px-0 pt-0 pb-2">
                                     <div className="p-0 overflow-x-auto">
-                                        <table className="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-                                            <thead className="align-bottom">
-                                                <tr>
-                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Order_ID</th>
-                                                    <th className="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Order Date</th>
-                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Amount</th>
-                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                                                    <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {reserved.map((orders) => (
+                                        {reserved.length != 0 ?
+                                            <table className="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
+                                                <thead className="align-bottom">
                                                     <tr>
-                                                        <td className="p-2 align-middle bg-transparent  whitespace-nowrap shadow-transparent">
-                                                            <div className="flex px-2 py-1 justify-center">
-                                                                <div className="flex flex-col justify-center">
-                                                                    <h6 className="mb-0 leading-normal text-sm cursor-pointer" onClick={() => dispatch(orderModalOn(orders))}>#{orders?._id}</h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                                                            <p className="mb-0 font-semibold leading-tight text-center text-xs">{orders?.date}</p>
-                                                        </td>
-                                                        <td className="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                                                            <span className="font-semibold leading-tight text-xs text-slate-400">₹{orders?.gigId?.price}</span>
-                                                        </td>
-                                                        <td className="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
-                                                            <span className="font-semibold leading-tight text-base">{orders?.status}</span>
-                                                        </td>
-                                                        <td className="p-2 align-middle text-center bg-transparent whitespace-nowrap shadow-transparent">
-                                                            { orders?.status == 'Cancelled' ? 
-                                                            <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
-                                                            : orders?.status == 'Completed' ? 
-                                                            <a><span className="bg-gradient-to-tl from-green-600 to-green-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Completed</span></a>
-                                                            :
-                                                            <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs cursor-pointer rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
-                                                        }
-                                                        </td>
+                                                        <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Order_ID</th>
+                                                        <th className="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Order Date</th>
+                                                        <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Amount</th>
+                                                        <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
+                                                        <th className="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-base font-mono border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    {reserved?.map((orders) => (
+
+                                                        <tr>
+                                                            <td className="p-2 align-middle bg-transparent  whitespace-nowrap shadow-transparent">
+                                                                <div className="flex px-2 py-1 justify-center">
+                                                                    <div className="flex flex-col justify-center">
+                                                                        <h6 className="mb-0 leading-normal text-sm cursor-pointer" onClick={() => dispatch(orderModalOn(orders))}>#{orders?._id}</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td className="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                                                                <p className="mb-0 font-semibold leading-tight text-center text-xs">{moment(orders?.date).format("lll")}</p>
+                                                            </td>
+                                                            <td className="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                                                                <span className="font-semibold leading-tight text-xs text-slate-400">₹{orders?.gigId?.price}</span>
+                                                            </td>
+                                                            <td className="p-2 text-center align-middle bg-transparent whitespace-nowrap shadow-transparent">
+                                                                <span className="font-semibold leading-tight text-base">{orders?.status}</span>
+                                                            </td>
+                                                            <td className="p-2 align-middle text-center bg-transparent whitespace-nowrap shadow-transparent">
+                                                                {orders?.status == 'Cancelled' ?
+                                                                    <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
+                                                                    : orders?.status == 'Completed' ?
+                                                                        <a><span className="bg-gradient-to-tl from-green-600 to-green-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Completed</span></a>
+                                                                        :
+                                                                        <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs cursor-pointer rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                            : <h1 className="font-mono font-bold text-2xl mt-72 flex justify-center text-black ">No Reservations</h1>
+                                        }
                                     </div>
                                 </div>
                             </div>
