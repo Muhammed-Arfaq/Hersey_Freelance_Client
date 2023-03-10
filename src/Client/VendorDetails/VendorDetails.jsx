@@ -6,11 +6,13 @@ import { useDispatch } from 'react-redux'
 import { setModalOn } from '../../Redux/Reducer/vendorReviewModal'
 import VendorReviewModal from '../VendorReviewModal/VendorReviewModal'
 import Navbar from '../Home/Navbar'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { vendorReview, viewGigVendor } from '../../API';
 import moment from 'moment/moment';
+import { setCurrentChat } from '../../Redux/Reducer/currentChat';
 
 export default function VendorDetails() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [gig, setGig] = useState([])
   const [review, setReview] = useState([])
@@ -89,15 +91,15 @@ export default function VendorDetails() {
               <div class="flex flex-wrap justify-center">
                 <div class="w-full px-4">
                   <p class="font-light leading-relaxed text-slate-600 mb-6">{data?.vendor?.vendorId?.about}</p>
-                  <Link
-                    to={"/chat"} state={{
-                      vendorId: data?.vendor?.vendorId?._id,
-                      vendorName: data?.vendor?.vendorId?.fullName
+                  <button
+                    onClick={() => {
+                      dispatch(setCurrentChat(data?.vendor?.vendorId))
+                      navigate("/chat")
                     }}
                     class="rounded border border-current px-8 py-3 text-sm font-medium text-black transition hover:scale-110 hover:shadow-xl"
                   >
                     Contact Me
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
