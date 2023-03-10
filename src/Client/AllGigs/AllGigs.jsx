@@ -14,7 +14,7 @@ export default function AllGigs() {
 
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
 
     const searchData = (tempProduct) => {
         return search === ""
