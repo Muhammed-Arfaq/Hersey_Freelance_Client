@@ -23,6 +23,7 @@ export default function Chat() {
     const [vendors, setVendors] = useState([])
     const [getCount, setGetCount] = useState([])
     const [msgCount, setMsgCount] = useState("")
+    const [showMsg, setShowMsg] = useState(false)   
     const token = localStorage.getItem("jwt");
 
     const getMessageCount = () => {
@@ -49,9 +50,10 @@ export default function Chat() {
     useEffect(() => {
         getMessageCount()
         getUserConnections()
-    }, [])
+    }, [message])
 
     const handleSelect = (vendor) => {
+        setShowMsg(true)
         dispatch(setCurrentChat(vendor));
     };
 
@@ -170,7 +172,7 @@ export default function Chat() {
                             <div class="flex flex-col h-full overflow-x-auto mb-4 scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                                 <div class="flex flex-col h-full">
                                     <div class="grid grid-cols-12 gap-y-2">
-                                        {message?.map((msg) =>
+                                        {showMsg && message?.map((msg) =>
                                             msg?.myself ? (
 
                                                 <div key={msg?._id} class="col-start-6 col-end-13 p-3 rounded-lg">

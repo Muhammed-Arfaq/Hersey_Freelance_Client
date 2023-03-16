@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/img/Logo1.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { switchOn } from "../../Redux/Reducer/profileModal";
 import ProfileModal from "../ProfileModal/ProfileModal";
 import Navbar from "../Home/Navbar";
@@ -18,6 +18,8 @@ export default function Profile() {
 
     const [user, setUser] = useState("")
     const [reserved, setReserved] = useState([])
+
+    const show = useSelector((state) => state.editProfile.show)
 
     const userDetails = async () => {
         await userDetail(token).then((result) => {
@@ -60,7 +62,7 @@ export default function Profile() {
     return (
         <>
             <ReservedGigsModal />
-            <ProfileModal />
+            { show && <ProfileModal />}
             <Navbar />
 
             <div class="h-full bg-white p-8">
