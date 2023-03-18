@@ -23,6 +23,7 @@ export default function Chat() {
     const [vendors, setVendors] = useState([])
     const [getCount, setGetCount] = useState([])
     const [msgCount, setMsgCount] = useState("")
+    const [reRender, setReRender] = useState(false)
     const [showMsg, setShowMsg] = useState(false)   
     const token = localStorage.getItem("jwt");
 
@@ -41,6 +42,7 @@ export default function Chat() {
         await userConnections(userId, token).then((result) => {
             setVendors(result.data.sortedUsers)
             setGetCount(result.data.connectionCount)
+            setReRender(!reRender)
             console.log(result);
         }).catch(() => toast.error("Internal Error"));
     }
@@ -70,12 +72,12 @@ export default function Chat() {
             }
         };
         fetchMessages(currentChat._id);
-    }, [vendors, currentChat._id]);
+    }, [reRender, currentChat._id]);
 
     useEffect(() => {
         getMessageCount()
         getUserConnections()
-    }, [vendors])
+    }, [reRender])
 
     // useEffect(() => {
     //     scrolRef.current.scrollIntoView({ behavior: "smooth" })
