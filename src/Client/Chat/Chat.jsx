@@ -75,7 +75,7 @@ export default function Chat() {
     useEffect(() => {
         getMessageCount()
         getUserConnections()
-    }, [message])
+    }, [msgCount])
 
     // useEffect(() => {
     //     scrolRef.current.scrollIntoView({ behavior: "smooth" })
