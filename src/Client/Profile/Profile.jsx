@@ -141,7 +141,7 @@ export default function Profile() {
                             <h4 class="text-xl text-gray-900 font-bold">Recently Reserved Gigs</h4>
                             <div class="relative px-4">
                                 <div class="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
-                                {reserved.length != 0 ? reserved.map((reserved) => (
+                                {reserved.length != 0 ? reserved.slice(0, 5).map((reserved) => (
                                     <div class="flex items-center w-full my-6 -ml-1.5">
                                         <div class="w-1/12 z-10">
                                             <div class="w-3.5 h-3.5 bg-gradient-to-r from-fuchsia-800 to-indigo-900 rounded-full"></div>
@@ -199,9 +199,9 @@ export default function Profile() {
                                                             </td>
                                                             <td className="p-2 align-middle text-center bg-transparent whitespace-nowrap shadow-transparent">
                                                                 {orders?.status == 'Cancelled' ?
-                                                                    <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
+                                                                    <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs cursor-default rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Cancelled</span></a>
                                                                     : orders?.status == 'Completed' ?
-                                                                        <a><span className="bg-gradient-to-tl from-green-600 to-green-400 px-3 text-xs rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Completed</span></a>
+                                                                        <a><span className="bg-gradient-to-tl from-green-600 to-green-400 px-3 text-xs cursor-default rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white ">Completed</span></a>
                                                                         :
                                                                         <a><span className="bg-gradient-to-tl from-red-600 to-red-400 px-3 text-xs cursor-pointer rounded-lg py-2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" onClick={() => cancelGig(orders?._id)}>Cancel</span></a>
                                                                 }
