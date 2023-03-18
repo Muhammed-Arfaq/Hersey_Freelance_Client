@@ -70,7 +70,7 @@ export default function Chat() {
             }
         };
         fetchMessages(currentChat._id);
-    }, [message, currentChat._id]);
+    }, [vendors, currentChat._id]);
 
     useEffect(() => {
         getMessageCount()
