@@ -70,12 +70,9 @@ export default function Chat() {
             }
         };
         fetchMessages(currentChat._id);
-    }, [message, currentChat._id]);
-
-    useEffect(() => {
         getMessageCount()
         getUserConnections()
-    }, [msgCount])
+    }, [message, currentChat._id]);
 
     // useEffect(() => {
     //     scrolRef.current.scrollIntoView({ behavior: "smooth" })
