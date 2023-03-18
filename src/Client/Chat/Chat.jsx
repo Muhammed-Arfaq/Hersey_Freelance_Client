@@ -47,11 +47,6 @@ export default function Chat() {
 
     // console.log(getCount);
 
-    useEffect(() => {
-        getMessageCount()
-        getUserConnections()
-    }, [message])
-
     const handleSelect = (vendor) => {
         setShowMsg(true)
         dispatch(setCurrentChat(vendor));
@@ -76,6 +71,11 @@ export default function Chat() {
         };
         fetchMessages(currentChat._id);
     }, [message, currentChat._id]);
+
+    useEffect(() => {
+        getMessageCount()
+        getUserConnections()
+    }, [message])
 
     // useEffect(() => {
     //     scrolRef.current.scrollIntoView({ behavior: "smooth" })
