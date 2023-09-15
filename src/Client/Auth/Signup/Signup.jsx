@@ -47,16 +47,23 @@ export default function Signup() {
     await userSignup
       .validate(formData, { abortEarly: false })
       .then(() => {
-        console.log("heee");
-        axios.post("/OTP", {
+
+        axios.post("/verifyOTP", {
           fullName,
           userName,
           email,
           phone,
           password,
           passwordConfirm
-        }).then(() => {
-          navigate("/userOtp")
+        }).then((result) => {
+
+          localStorage.setItem("jwt", result.data?.token)
+          localStorage.setItem("userId", result.data?.data?.user?._id)
+          localStorage.setItem("userName", result.data?.data?.user?.userName)
+          localStorage.setItem("email", result.data?.data?.user?.email)
+          toast.success("Signup Successfull")
+          navigate("/login")
+
         }).catch(() => toast.error("Email already exists!!!"))
       })
       .catch((validationErrors) => {
